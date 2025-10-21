@@ -12,6 +12,7 @@ class GameCamera;
 class Enemy;
 class Boss;
 class Sord;
+class Food;
 class GameClear;
 enum class TurnType {
 	Player,
@@ -33,14 +34,15 @@ public:
 	TurnType GetCurrentTurn() const;
 	Vector3 GetPlayerPosition() const { return m_player->GetPosition(); }
 	Vector3  GetEnemyPosition() const { return m_enemy->GetPosition(); }
-	Vector3 GetItemPosition() const { return m_item->GetPosition(); }
+	Vector3 GetItemPosition() const { return m_sord->GetPosition(); }
 
 	//private:
 	ModelRender m_modelRender;
 	BackGround* m_backGround;
 	Player* m_player;
 	Enemy* m_enemy;
-	Sord* m_item;
+	Sord* m_sord;
+	Food* m_food;
 	Boss* m_boss;
 	GameCamera* m_gamecamera;
 	GameClear* m_gameclear;

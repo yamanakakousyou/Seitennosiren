@@ -5,6 +5,11 @@
 #include "Boss.h"
 #include "GameOver.h"
 
+namespace {
+	const int PLAYERHP = 10;
+	const int PLAYERMAXHP = 10;
+}
+
 bool Player::Start()
 {
 	//アニメーションクリップをロードする。
@@ -32,6 +37,9 @@ bool Player::Start()
 	m_game = FindGO<Game>("game");
 	m_enemy = FindGO<Enemy>("enemy");
 	m_boss = FindGO<Boss>("boss");
+
+	m_PlayerHP = PLAYERHP;
+	m_PlayerMaxHP = PLAYERMAXHP;
 	return true;
 }
 
@@ -232,6 +240,14 @@ void Player::PlayerAttack()
 				}
 			}
 		}
+	}
+}
+
+void Player::PlayerHeal(int recovery)
+{
+	m_PlayerHP += recovery;
+	if (m_PlayerHP > m_PlayerMaxHP) {
+		m_PlayerHP = m_PlayerMaxHP; // 最大HPを超えないように
 	}
 }
 

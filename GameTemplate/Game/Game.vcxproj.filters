@@ -21,6 +21,7 @@
     <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Sord.cpp" />
+    <ClCompile Include="Food.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -37,5 +38,6 @@
     <ClInclude Include="GameClear.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Sord.h" />
+    <ClInclude Include="Food.h" />
   </ItemGroup>
 </Project>
