@@ -8,6 +8,7 @@
 namespace {
 	const int PLAYERHP = 10;
 	const int PLAYERMAXHP = 10;
+	const int SATIETY = 100;
 }
 
 bool Player::Start()
@@ -40,6 +41,17 @@ bool Player::Start()
 
 	m_PlayerHP = PLAYERHP;
 	m_PlayerMaxHP = PLAYERMAXHP;
+	m_satiety = SATIETY;
+
+	m_spriteRender.Init("Assets/sprite/HP.DDS", 1024, 128);
+	m_spriteRender.SetPosition({ -200.0f, 500.0f, 0.0f });
+	m_spriteRender.SetScale({ 0.5f, 0.5f, 0.5f });
+	m_spriteRender.SetPivot(Vector2(0.0f, 0.5f));
+
+	m_satietyRender.Init("Assets/sprite/Satiety.DDS", 1024, 128);
+	m_satietyRender.SetPosition({ -200.0f,430.0f,0.0f });
+	m_satietyRender.SetScale({ 0.5f,0.5f,0.5f });
+	m_satietyRender.SetPivot(Vector2(0.0f, 0.5f));
 	return true;
 }
 
@@ -58,6 +70,7 @@ void Player::Update()
 	PlayAnimation();
 	modelRender.Update();
 	m_spriteRender.Update();
+	m_satietyRender.Update();
 	PlayerUI();
 	//PlayerAttack();
 	PlayerTakeDamage(dmg);
@@ -147,6 +160,14 @@ void Player::PlayerMoveTurn()
 		rot.SetRotationY(angle);
 		modelRender.SetRotation(rot);
 
+		m_satiety -= 1;
+		if (m_satiety < 0) {
+			m_satiety = 0;
+			// 満腹度0ならHPが減る
+			m_PlayerHP -= 1;
+			if (m_PlayerHP < 0) m_PlayerHP = 0;
+		}
+
 		HasMoved = true;
 		m_game->NextTurn();
 	}
@@ -157,6 +178,15 @@ void Player::PlayerMoveTurn()
 	if (g_pad[0]->IsTrigger(enButtonB)) {
 		modelRender.PlayAnimation(enAnimationClip_Attack);
 		PlayerAttack();
+
+		m_satiety -= 1;
+		if (m_satiety < 0) {
+			m_satiety = 0;
+			// 満腹度0ならHPが減る
+			m_PlayerHP -= 1;
+			if (m_PlayerHP < 0) m_PlayerHP = 0;
+		}
+
 		HasMoved = true;
 		m_game->NextTurn();
 	}
@@ -165,10 +195,7 @@ void Player::PlayerMoveTurn()
 void Player::PlayerUI()
 {
 
-	m_spriteRender.Init("Assets/sprite/HP.DDS", 1024, 128);
-	m_spriteRender.SetPosition({ -200.0f, 500.0f, 0.0f });
-	m_spriteRender.SetScale({ 0.5f, 0.5f, 0.5f });
-	m_spriteRender.SetPivot(Vector2(0.0f, 0.5f));
+
 
 	// HP表示用のバッファを用意
 	wchar_t hpText[32];
@@ -176,11 +203,25 @@ void Player::PlayerUI()
 
 	m_fontRender.SetText(hpText); // ここはSetText等、実際のテキスト設定関数に合わせてください
 	m_fontRender.SetPosition({ -600.0f, 530.0f, 0.0f });
-	m_fontRender.SetScale(2.0);
+	m_fontRender.SetScale(1.5);
 	m_fontRender.SetColor(g_vec4Black);
 
 	float hpRate = (float)m_PlayerHP / 10.0f; // 最大HPを10として割合計算
 	m_spriteRender.SetScale({ 0.5f * hpRate, 0.5f, 0.5f });
+
+
+
+	// 満腹度テキスト
+	wchar_t satietyText[32];
+	swprintf_s(satietyText, sizeof(satietyText) / sizeof(wchar_t), L"満腹度 %d/100", m_satiety);
+	m_satietyFontRender.SetText(satietyText);
+	m_satietyFontRender.SetPosition({ -650.0f, 450.0f, 0.0f }); // 少し下
+	m_satietyFontRender.SetScale(1.0);
+	m_satietyFontRender.SetColor(g_vec4Black);
+
+	// 満腹度バーの割合
+	float satietyRate = (float)m_satiety / 100.0f; // 0～100%
+	m_satietyRender.SetScale({ 0.5f * satietyRate, 0.5f, 0.5f });
 }
 
 void Player::PlayerAttack()
@@ -287,4 +328,6 @@ void Player::Render(RenderContext& renderContext)
 	modelRender.Draw(renderContext);
 	m_spriteRender.Draw(renderContext);
 	m_fontRender.Draw(renderContext);
+	m_satietyRender.Draw(renderContext);
+	m_satietyFontRender.Draw(renderContext);
 }
