@@ -31,6 +31,8 @@ public:
 
     void PlayerAttack();
 
+    void PlayerHeal(int recovery);
+
     void PlayerTakeDamage(int dmgp);
 
     void SetEnemy(Enemy* enemy);
@@ -87,7 +89,8 @@ public:
 
     int playerState = 0;//プレイヤーのステート
 
-    int m_PlayerHP = 10;
+    int m_PlayerHP = 0;
+    int m_PlayerMaxHP = 0;
     int m_PlayerAttackDamage = 2;
     int dmg = 0;
     int m_attackPower = 1;

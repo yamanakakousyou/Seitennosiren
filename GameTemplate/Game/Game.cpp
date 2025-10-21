@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "GameCamera.h"
 #include "Sord.h"
+#include "Food.h"
 #include "Boss.h"
 #include "GameClear.h"
 
@@ -36,7 +37,8 @@ bool Game::Start()
 	m_backGround = NewGO<BackGround>(0, "backGround");
 	m_player = NewGO<Player>(0, "player");
 	m_enemy = NewGO<Enemy>(0, "enemy");
-	m_item = NewGO<Sord>(0, "item");
+	m_sord = NewGO<Sord>(0, "item");
+	m_food = NewGO<Food>(0, "food");
 	//m_boss = NewGO<Boss>(0, "boss");
 	m_enemy->SetPlayer(m_player);
 	//m_boss->SetPlayer(m_player);
@@ -48,9 +50,11 @@ bool Game::Start()
 
 	if (stageID == 0)
 	{
+		// プレイヤーとエネミーの初期位置を十分離す
 		m_player->SetPosition(Vector3(m_player->m_position));
 		m_enemy->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
-		m_item->SetPosition(Vector3(100.0f, 0.0f, 0.0f));
+		m_sord->SetPosition(Vector3(100.0f, 0.0f, 0.0f));
+		m_food->SetPosition(Vector3(250.0f, 20.0f, 0.0f));
 		//m_boss->SetPosition(Vector3(400.0f, 0.0f, 0.0f));
 	}
 
@@ -60,9 +64,11 @@ bool Game::Start()
 		//m_enemy->SetPosition(Vector3(400.0f, 0.0f, 0.0f));
 		//m_item->SetPosition(Vector3(100.0f, 0.0f, 0.0f));
 		//m_boss->SetPosition(Vector3(-300.0f, 0.0f, 0.0f));
+	// プレイヤーとエネミーの初期位置を十分離す
 		m_player->SetPosition(Vector3(m_player->m_position));
 		m_enemy->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
-		m_item->SetPosition(Vector3(100.0f, 0.0f, 0.0f));
+		m_sord->SetPosition(Vector3(100.0f, 0.0f, 0.0f));
+		m_food->SetPosition(Vector3(250.0f, 20.0f, 0.0f));
 		//m_boss->SetPosition(Vector3(400.0f, 0.0f, 0.0f));
 	}
 
