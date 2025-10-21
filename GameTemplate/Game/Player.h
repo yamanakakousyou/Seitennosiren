@@ -73,9 +73,12 @@ public:
     //回転用変数
     Quaternion rot;
 
-    ModelRender modelRender;
-    SpriteRender m_spriteRender;
+    ModelRender     modelRender;
+    SpriteRender    m_spriteRender;
     FontRender		m_fontRender;
+    FontRender      m_satietyFontRender;
+    SpriteRender    m_satietyRender;
+
     AnimationClip animationClips[enAnimationClip_Num];		//アニメーションクリップ。	//アニメーションクリップ。
     CharacterController m_characterController;  //キャラクターコントローラー。
 
@@ -91,6 +94,7 @@ public:
 
     int m_PlayerHP = 0;
     int m_PlayerMaxHP = 0;
+    int m_satiety = 0;
     int m_PlayerAttackDamage = 2;
     int dmg = 0;
     int m_attackPower = 1;
