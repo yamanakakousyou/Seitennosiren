@@ -33,6 +33,8 @@ public:
 
     void PlayerHeal(int recovery);
 
+    void PlayerEat(int amount);
+
     void PlayerTakeDamage(int dmgp);
 
     void SetEnemy(Enemy* enemy);

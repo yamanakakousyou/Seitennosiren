@@ -15,7 +15,12 @@ Food::~Food()
 bool Food::Start()
 {
 	//モデルの初期化。
-	m_modelRender.Init("Assets/modelData/Steak_Cooked.tkm");
+	if (m_type == FoodType::Meat) {
+		m_modelRender.Init("Assets/modelData/Steak_Cooked.tkm");
+	}
+	else if (m_type == FoodType::Onigiri) {
+		m_modelRender.Init("Assets/modelData/Onigiri.tkm");
+	}
 	m_modelRender.SetScale(7.0f, 7.0f, 7.0f);
 	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
@@ -33,9 +38,16 @@ void Food::Update()
 	float pickupRange = 30.0f; // 拾える範囲
 
 	if (dist < pickupRange) {
-		m_player->PlayerHeal(2);	//HPを2回復
-		DeleteGO(this);              // アイテムを消す
+		if (m_type == FoodType::Meat) {
+			m_player->PlayerHeal(2);	// HP回復
+			DeleteGO(this); // 拾ったら消える
+		}
+		else if (m_type == FoodType::Onigiri) {
+			m_player->PlayerEat(10);	// 満腹度回復
+			DeleteGO(this); // 拾ったら消える
+		}
 	}
+
 	m_modelRender.Update();
 }
 

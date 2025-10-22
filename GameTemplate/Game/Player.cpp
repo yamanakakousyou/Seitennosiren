@@ -292,6 +292,12 @@ void Player::PlayerHeal(int recovery)
 	}
 }
 
+void Player::PlayerEat(int amount)
+{
+	m_satiety += amount;
+	if (m_satiety > 100) m_satiety = 100; // Å‘å’l§ŒÀ
+}
+
 void Player::SetEnemy(Enemy* enemy)
 {
 	m_enemy = enemy;
