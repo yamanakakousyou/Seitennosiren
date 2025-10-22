@@ -14,16 +14,16 @@ namespace {
 bool Player::Start()
 {
 	//アニメーションクリップをロードする。
-	animationClips[enAnimationClip_Idle].Load("Assets/animData/idle.tka");
+	animationClips[enAnimationClip_Idle].Load("Assets/animData/Playeridle.tka");
 	animationClips[enAnimationClip_Idle].SetLoopFlag(true);
-	animationClips[enAnimationClip_Walk].Load("Assets/animData/Walk.tka");
+	animationClips[enAnimationClip_Walk].Load("Assets/animData/PlayerWalk.tka");
 	animationClips[enAnimationClip_Walk].SetLoopFlag(true);
-	animationClips[enAnimationClip_Attack].Load("Assets/animData/Attack.tka");
+	animationClips[enAnimationClip_Attack].Load("Assets/animData/PlayerAttack.tka");
 	animationClips[enAnimationClip_Attack].SetLoopFlag(true);
-	animationClips[enAnimationClip_Die].Load("Assets/animData/Die.tka");
-	animationClips[enAnimationClip_Die].SetLoopFlag(true);
+	//animationClips[enAnimationClip_Die].Load("Assets/animData/Die.tka");
+	//animationClips[enAnimationClip_Die].SetLoopFlag(true);
 	//モデルを初期化する
-	modelRender.Init("Assets/modelData/Unitychan.tkm", animationClips, enAnimationClip_Num, enModelUpAxisY);
+	modelRender.Init("Assets/modelData/Player.tkm", animationClips, enAnimationClip_Num, enModelUpAxisZ);
 
 	//キャラコンを初期化する
 	//m_position = Vector3(0.0f, 0.0f, 0.0f); // 例
