@@ -38,7 +38,12 @@ bool Game::Start()
 	m_player = NewGO<Player>(0, "player");
 	m_enemy = NewGO<Enemy>(0, "enemy");
 	m_sord = NewGO<Sord>(0, "item");
-	m_food = NewGO<Food>(0, "food");
+
+	auto meat = NewGO<Food>(0, "meat");
+
+
+	auto onigiri = NewGO<Food>(0, "onigiri");
+
 	//m_boss = NewGO<Boss>(0, "boss");
 	m_enemy->SetPlayer(m_player);
 	//m_boss->SetPlayer(m_player);
@@ -54,7 +59,11 @@ bool Game::Start()
 		m_player->SetPosition(Vector3(m_player->m_position));
 		m_enemy->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
 		m_sord->SetPosition(Vector3(100.0f, 0.0f, 0.0f));
-		m_food->SetPosition(Vector3(250.0f, 20.0f, 0.0f));
+		meat->SetType(FoodType::Meat);
+		meat->SetPosition({ 100.0f, 0.0f, 0.0f });
+		onigiri->SetType(FoodType::Onigiri);
+		onigiri->SetPosition({ 200.0f, 0.0f, 0.0f });
+		/*m_food->SetPosition(Vector3(250.0f, 20.0f, 0.0f));*/
 		//m_boss->SetPosition(Vector3(400.0f, 0.0f, 0.0f));
 	}
 
@@ -68,7 +77,11 @@ bool Game::Start()
 		m_player->SetPosition(Vector3(m_player->m_position));
 		m_enemy->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
 		m_sord->SetPosition(Vector3(100.0f, 0.0f, 0.0f));
-		m_food->SetPosition(Vector3(250.0f, 20.0f, 0.0f));
+		meat->SetType(FoodType::Meat);
+		meat->SetPosition({ 100.0f, 0.0f, 0.0f });
+		onigiri->SetType(FoodType::Onigiri);
+		onigiri->SetPosition({ 200.0f, 0.0f, 0.0f });
+		/*m_food->SetPosition(Vector3(250.0f, 20.0f, 0.0f));*/
 		//m_boss->SetPosition(Vector3(400.0f, 0.0f, 0.0f));
 	}
 
