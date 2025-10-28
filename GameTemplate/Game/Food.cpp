@@ -39,11 +39,11 @@ void Food::Update()
 
 	if (dist < pickupRange) {
 		if (m_type == FoodType::Meat) {
-			m_player->PlayerHeal(2);	// HP‰ñ•œ
+			m_player->AddItem(ItemType::Meat);	// HP‰ñ•œ
 			DeleteGO(this); // E‚Á‚½‚çÁ‚¦‚é
 		}
 		else if (m_type == FoodType::Onigiri) {
-			m_player->PlayerEat(10);	// –• “x‰ñ•œ
+			m_player->AddItem(ItemType::Onigiri);	// –• “x‰ñ•œ
 			DeleteGO(this); // E‚Á‚½‚çÁ‚¦‚é
 		}
 	}

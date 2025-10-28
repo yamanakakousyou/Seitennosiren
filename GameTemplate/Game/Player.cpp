@@ -4,6 +4,7 @@
 #include "Enemy.h"
 #include "Boss.h"
 #include "GameOver.h"
+#include "Food.h"
 
 namespace {
 	const int PLAYERHP = 10;
@@ -74,6 +75,8 @@ void Player::Update()
 	PlayerUI();
 	//PlayerAttack();
 	PlayerTakeDamage(dmg);
+	Invebtory();
+	
 }
 
 void Player::Rotation()
@@ -125,6 +128,8 @@ void Player::PlayAnimation()
 
 void Player::PlayerMoveTurn()
 {
+	if (m_isInventoryOpen) return;
+
 	static TurnType lastTurn = TurnType::Player;
 	if (m_game->GetCurrentTurn() != lastTurn) {
 		HasMoved = false;
@@ -141,6 +146,14 @@ void Player::PlayerMoveTurn()
 	static bool wasPressed = false;
 	bool isPressed = false;
 
+	//コントローラーでの十字キー移動
+	if (g_pad[0]->IsTrigger(enButtonUp) ) { moveDir.z += 1.0f; isPressed = true; }
+	if (g_pad[0]->IsTrigger(enButtonDown)) { moveDir.z -= 1.0f; isPressed = true; }
+	if (g_pad[0]->IsTrigger(enButtonRight)) { moveDir.x += 1.0f; isPressed = true; }
+	if (g_pad[0]->IsTrigger(enButtonLeft)) { moveDir.x -= 1.0f; isPressed = true; }
+
+
+	////キーボードでのWASD移動
 	if (GetAsyncKeyState('W') & 0x8000) { moveDir.z += 1.0f; isPressed = true; }
 	if (GetAsyncKeyState('S') & 0x8000) { moveDir.z -= 1.0f; isPressed = true; }
 	if (GetAsyncKeyState('D') & 0x8000) { moveDir.x += 1.0f; isPressed = true; }
@@ -194,9 +207,6 @@ void Player::PlayerMoveTurn()
 
 void Player::PlayerUI()
 {
-
-
-
 	// HP表示用のバッファを用意
 	wchar_t hpText[32];
 	swprintf_s(hpText, sizeof(hpText) / sizeof(wchar_t), L"HP%d/10", m_PlayerHP);
@@ -313,14 +323,109 @@ void Player::AttackPower(int value)
 	m_attackPower += value;
 }
 
+
+void Player::Invebtory()
+{
+	// 前フレームのキー状態を保持
+	static bool prevX = false;
+	static bool prevZ = false;
+	static bool prevC = false;
+
+	// 入力状態取得
+	bool padSelect = (g_pad[0] && g_pad[0]->IsTrigger(enButtonSelect));
+	bool padUseLeft = (g_pad[0] && g_pad[0]->IsTrigger(enButtonLB1));
+	bool padUseRight = (g_pad[0] && g_pad[0]->IsTrigger(enButtonRB1));
+
+	bool kbX = (GetAsyncKeyState('X') & 0x8000) != 0;
+	bool kbZ = (GetAsyncKeyState('Z') & 0x8000) != 0;
+	bool kbC = (GetAsyncKeyState('C') & 0x8000) != 0;
+
+	// --- 開閉トグル処理 ---
+	// 1. パッドのSelectまたはXキーが「新しく押された」瞬間に切り替える
+	if (padSelect || (kbX && !prevX)) {
+		m_isInventoryOpen = !m_isInventoryOpen;  // ← トグルに変更！
+	}
+
+	// --- 開いているときのみアイテム使用 ---
+	if (m_isInventoryOpen) {
+		if (padUseLeft || (kbZ && !prevZ)) {
+			UseItem(0);
+		}
+		if (padUseRight || (kbC && !prevC)) {
+			UseItem(1);
+		}
+	}
+
+	// --- 状態更新 ---
+	prevX = kbX;
+	prevZ = kbZ;
+	prevC = kbC;
+}
+
+void Player::AddItem(ItemType type)
+{
+	InventoryItem item;
+
+	if (type == ItemType::Meat)
+	{
+		item.type = ItemType::Meat;
+		item.name = "Meat";
+	}
+	else if(type==ItemType::Onigiri)
+	{
+		item.type = ItemType::Onigiri;
+		item.name = "Onigiri";
+	}
+
+	// インベントリに追加
+	m_inventory.push_back(item);
+}
+
+//アイテムを使う
+void Player::UseItem(int index)
+{
+	// 範囲外アクセス防止
+	if (index < 0 || index >= m_inventory.size()) return;
+
+	auto& item = m_inventory[index];
+
+	// アイテムの種類に応じて効果を発動
+	if (item.type == ItemType::Meat) {
+		PlayerHeal(2);      // HPを2回復
+	}
+	else if (item.type == ItemType::Onigiri) {
+		PlayerEat(10);      // 満腹度を10回復
+	}
+
+	// 使ったアイテムは削除
+	m_inventory.erase(m_inventory.begin() + index);
+}
+
+
+void Player::DrawInventory(RenderContext& rc)
+{	
+	if (!m_isInventoryOpen) {
+		m_itemFontRender.SetText(L""); // 空文字をセット
+		return;
+	}
+
+	std::wstring allText;
+	for (int i = 0; i < m_inventory.size(); ++i) {
+		allText += std::to_wstring(i + 1) + L": " + std::wstring(m_inventory[i].name.begin(), m_inventory[i].name.end()) + L"\n";
+	}
+
+	m_itemFontRender.SetText(allText.c_str());
+	m_itemFontRender.SetPosition({ -600.0f, 0.0f, 0.0f });
+	m_itemFontRender.SetScale(1.2f);
+	m_itemFontRender.SetColor(g_vec4Black);
+}
+
 void Player::PlayerTakeDamage(int dmg)
 {
 	m_PlayerHP -= dmg;
 
 	if (m_PlayerHP <= 0) {
 		m_PlayerHP = 0;
-
-		modelRender.PlayAnimation(enAnimationClip_Die);
 
 		NewGO<GameOver>(0, "gameover");
 		DeleteGO(this);
@@ -334,6 +439,8 @@ void Player::Render(RenderContext& renderContext)
 	modelRender.Draw(renderContext);
 	m_spriteRender.Draw(renderContext);
 	m_fontRender.Draw(renderContext);
+	m_itemFontRender.Draw(renderContext);
 	m_satietyRender.Draw(renderContext);
 	m_satietyFontRender.Draw(renderContext);
+	DrawInventory(renderContext);
 }
