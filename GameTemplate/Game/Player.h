@@ -5,6 +5,19 @@ class Enemy;
 class Boss;
 class Transform;
 class GameOver;
+
+enum class ItemType
+{
+    Meat,
+    Onigiri
+};
+
+// インベントリ内のアイテム情報
+struct InventoryItem {
+    ItemType type;       // アイテムの種類
+    std::string name;    // 表示名（例："肉"、"おにぎり"）
+};
+
 class Player :public IGameObject
 {
 public:
@@ -72,6 +85,13 @@ public:
 
     void AttackPower(int value);
 
+    void AddItem(ItemType type);       // アイテムを拾ったときに追加
+    void UseItem(int index);           // 指定番号のアイテムを使用
+    void ToggleInventory();            // Xキーで開閉
+    void Invebtory();
+   //void CloseToggleInvebtory();
+    void DrawInventory(RenderContext& rc); // インベントリの描画
+
     //回転用変数
     Quaternion rot;
 
@@ -79,6 +99,7 @@ public:
     SpriteRender    m_spriteRender;
     FontRender		m_fontRender;
     FontRender      m_satietyFontRender;
+    FontRender      m_itemFontRender;
     SpriteRender    m_satietyRender;
 
     AnimationClip animationClips[enAnimationClip_Num];		//アニメーションクリップ。	//アニメーションクリップ。
@@ -93,6 +114,13 @@ public:
     Boss* m_boss = nullptr;
 
     int playerState = 0;//プレイヤーのステート
+    int m_selectedItemIndex = 0;
+
+    // 入力の前回状態を記録（押しっぱなし防止）
+    bool m_prevUp = false;
+    bool m_prevDown = false;
+    bool m_prevA = false;
+    bool m_prevB = false;
 
     int m_PlayerHP = 0;
     int m_PlayerMaxHP = 0;
@@ -103,4 +131,7 @@ public:
     float m_attackRange = 0;
     float m_attackCooldown = 1.0f;
     const float kAttackCooldown = 0.5f; // 0.5 秒のクールダウン
+
+    bool m_isInventoryOpen = false;            // インベントリを開いているかどうか
+    std::vector<InventoryItem> m_inventory;    // プレイヤーが持っているアイテム一覧
 };
