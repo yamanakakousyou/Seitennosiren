@@ -84,26 +84,19 @@ void Enemy::EnemyTurn()
 	lastTurn = m_game->GetCurrentTurn();
 
 	if (m_game->GetCurrentTurn() == TurnType::Enemy && !HasMoved) {
-		// 待ち時間が経過していなければ何もしない
-		if (!m_game->IsEnemyWaitTimeElapsed()) {
-			return;
-		}
+		if (!m_game->IsEnemyWaitTimeElapsed()) return;
 
 		Vector3 toPlayer = m_game->GetPlayerPosition() - m_position;
 		float dist = toPlayer.Length();
-
-		float attackRange = 70.0f; // 近接攻撃できる距離
+		float attackRange = 70.0f; // 近接攻撃距離
 
 		// --- 攻撃優先 ---
 		if (dist < attackRange) {
-
 			float angle = atan2f(toPlayer.x, toPlayer.z);
 			Quaternion rot;
 			rot.SetRotationY(angle);
 			m_modelRender.SetRotation(rot);
 
-
-			//Cooldown(dt);
 			m_modelRender.PlayAnimation(enAnimationClip_Attack);
 			EnemyAttack();
 			HasMoved = true;
@@ -112,27 +105,32 @@ void Enemy::EnemyTurn()
 		}
 
 		Vector3 move(0, 0, 0);
-		float step = 20.0f;
-
-		// プレイヤーが近ければ近づく、それ以外はランダム
-		float chaseRange = 150.0f; // プレイヤーに近づく範囲
+		float step = 20.0f; // 1マスの見た目距離
+		float chaseRange = 150.0f;
 
 		if (dist < chaseRange) {
-			// プレイヤー方向に移動
-			toPlayer.Normalize();
-			move = toPlayer * step;
+			// XとZの距離の絶対値を比較して大きい軸に沿って移動
+			//常に正方向か負方向かを「正のとき/負のとき」で決める処理,
+			// 分岐の回数を減らせる。
+			if (fabs(toPlayer.x) > fabs(toPlayer.z)) {
+				move.x = (toPlayer.x > 0) ? step : -step;
+			}
+			else {
+				move.z = (toPlayer.z > 0) ? step : -step;
+			}
 		}
 		else {
-			// ランダム移動
+			// ランダム移動（上下左右）
 			int dir = rand() % 4;
 			switch (dir) {
-			case 0: move = Vector3(0, 0, step); break;   // 前
-			case 1: move = Vector3(0, 0, -step); break;  // 後
-			case 2: move = Vector3(-step, 0, 0); break;  // 左
-			case 3: move = Vector3(step, 0, 0); break;   // 右
+			case 0: move.z = step; break;   // 前
+			case 1: move.z = -step; break;  // 後
+			case 2: move.x = -step; break;  // 左
+			case 3: move.x = step; break;   // 右
 			}
 		}
 
+		// 移動
 		m_position = m_characterController.Execute(move, 1.0f);
 		m_modelRender.SetPosition(m_position);
 
@@ -142,16 +140,16 @@ void Enemy::EnemyTurn()
 		rot.SetRotationY(angle);
 		m_modelRender.SetRotation(rot);
 
-		// Idle アニメーションを再生
 		m_modelRender.PlayAnimation(enAnimationClip_Idle);
 
 		HasMoved = true;
 		m_game->NextTurn();
 	}
 
+	// プレイヤーとの接触判定
 	Vector3 playerPos = m_game->GetPlayerPosition();
-	float dist = (playerPos - m_position).Length();
-	if (dist < 50.0f) { // 50.0fは当たり判定のしきい値
+	float distToPlayer = (playerPos - m_position).Length();
+	if (distToPlayer < 50.0f) {
 		// 当たった処理
 	}
 }
