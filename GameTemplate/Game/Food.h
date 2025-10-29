@@ -31,9 +31,9 @@ public:
 	Player* m_player = nullptr;
 	Game* m_game = nullptr;
 	ModelRender			m_modelRender;
-	Vector3 m_position = Vector3::Zero;//ポジション
+	Vector3 m_position = Vector3::Zero;		//ポジション
 
-	FoodType m_type = FoodType::Meat; // デフォルトは肉
+	FoodType m_type = FoodType::Meat;		// デフォルトは肉
 	bool			m_isGet = false;
 	bool			m_isCollected = false;	//アイテム取得済みかどうかのフラグ
 };

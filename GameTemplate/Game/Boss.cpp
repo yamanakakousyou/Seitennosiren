@@ -77,14 +77,7 @@ void Boss::EnemyAttack()
 
 void Boss::EnemyTakeDamage(int dmg)
 {
-    //m_BossHP -= dmg;
 
-    //if (m_BossHP <= 0) {
-    //    m_BossHP = 0;
-
-
-    //    DeleteGO(this);
-    //}
 }
 
 void Boss::BossTakeDamage(int dmg)
@@ -94,6 +87,7 @@ void Boss::BossTakeDamage(int dmg)
     if (m_BossHP <= 0) {
         m_BossHP = 0;
 
+        //ゲームクリアを表示する
         NewGO<GameClear>(0,"gameclear");
         DeleteGO(this);
         DeleteGO(m_game);
@@ -121,14 +115,14 @@ void Boss::EnemyTurn()
 
         float attackRange = 70.0f;
 
-        // --- 攻撃判定 ---
+        //攻撃判定
         if (dist < attackRange) {
             float angle = atan2f(toPlayer.x, toPlayer.z);
             Quaternion rot;
             rot.SetRotationY(angle);
             m_modelRender.SetRotation(rot);
 
-            // ★ボス専用攻撃アニメーション
+            //ボス専用攻撃アニメーション
             m_modelRender.PlayAnimation(enAnimationClip_BossAttack);
 
             EnemyAttack(); // 攻撃処理はEnemyのをそのまま使用
@@ -137,7 +131,7 @@ void Boss::EnemyTurn()
             return;
         }
 
-        // --- それ以外はEnemyの通常行動をそのまま使用 ---
+        //それ以外はEnemyの通常行動をそのまま使用
         Enemy::EnemyTurn();
     }
 }

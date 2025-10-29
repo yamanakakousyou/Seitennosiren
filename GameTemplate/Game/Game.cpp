@@ -40,18 +40,15 @@ bool Game::Start()
 	m_sord = NewGO<Sord>(0, "item");
 
 	auto meat = NewGO<Food>(0, "meat");
-
-
 	auto onigiri = NewGO<Food>(0, "onigiri");
 
-	//m_boss = NewGO<Boss>(0, "boss");
 	m_enemy->SetPlayer(m_player);
-	//m_boss->SetPlayer(m_player);
+
 	m_gamecamera = NewGO<GameCamera>(0, "gamecamera");
 	m_currentTurn = TurnType::Player;
 
+	//ステージIDで判別する
 	int stageID = m_backGround->GetStageID();
-	// プレイヤーとエネミーの初期位置を十分離す
 
 	if (stageID == 0)
 	{
@@ -63,8 +60,6 @@ bool Game::Start()
 		meat->SetPosition({ 100.0f, 0.0f, 0.0f });
 		onigiri->SetType(FoodType::Onigiri);
 		onigiri->SetPosition({ 200.0f, 0.0f, 0.0f });
-		/*m_food->SetPosition(Vector3(250.0f, 20.0f, 0.0f));*/
-		//m_boss->SetPosition(Vector3(400.0f, 0.0f, 0.0f));
 	}
 
 	if (stageID == 1)
@@ -81,8 +76,6 @@ bool Game::Start()
 		meat->SetPosition({ 100.0f, 0.0f, 0.0f });
 		onigiri->SetType(FoodType::Onigiri);
 		onigiri->SetPosition({ 200.0f, 0.0f, 0.0f });
-		/*m_food->SetPosition(Vector3(250.0f, 20.0f, 0.0f));*/
-		//m_boss->SetPosition(Vector3(400.0f, 0.0f, 0.0f));
 	}
 
 	return true;
@@ -133,10 +126,6 @@ void Game::OnEnemyDead(Enemy* enemy)
 	}
 }
 
-void Game::EnemyTurn()
-{
-
-}
 TurnType Game::GetCurrentTurn() const {
 	return m_currentTurn;
 }

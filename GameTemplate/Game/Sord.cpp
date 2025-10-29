@@ -34,11 +34,11 @@ void Sord::Update()
 	Vector3 toPlayer = m_player->GetPosition() - m_position;
 	float dist = toPlayer.Length();
 
-	float pickupRange = 30.0f; // 拾える範囲
+	float pickupRange = 30.0f;		// 拾える範囲
 
 	if (dist < pickupRange) {
 		m_player->AttackPower(2); // 攻撃力+2
-		DeleteGO(this);              // アイテムを消す
+		DeleteGO(this);           // アイテムを消す
 	}
 }
 

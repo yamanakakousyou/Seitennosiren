@@ -49,7 +49,7 @@ public:
 	Vector3 m_pos;
 	TurnType m_currentTurn = TurnType::Player;
 	std::chrono::steady_clock::time_point m_enemyTurnStartTime;
-	float m_enemyWaitSeconds = 1.0f; // —á: 2•b‘Ò‚Â
+	float m_enemyWaitSeconds = 1.0f; // —á: 1•b‘Ò‚Â
 
 
 public:
