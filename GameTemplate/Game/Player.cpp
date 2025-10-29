@@ -21,8 +21,6 @@ bool Player::Start()
 	animationClips[enAnimationClip_Walk].SetLoopFlag(true);
 	animationClips[enAnimationClip_Attack].Load("Assets/animData/PlayerAttack.tka");
 	animationClips[enAnimationClip_Attack].SetLoopFlag(true);
-	//animationClips[enAnimationClip_Die].Load("Assets/animData/Die.tka");
-	//animationClips[enAnimationClip_Die].SetLoopFlag(true);
 	//モデルを初期化する
 	modelRender.Init("Assets/modelData/Player.tkm", animationClips, enAnimationClip_Num, enModelUpAxisZ);
 
@@ -40,6 +38,7 @@ bool Player::Start()
 	m_enemy = FindGO<Enemy>("enemy");
 	m_boss = FindGO<Boss>("boss");
 
+	//入れる
 	m_PlayerHP = PLAYERHP;
 	m_PlayerMaxHP = PLAYERMAXHP;
 	m_satiety = SATIETY;
@@ -119,10 +118,6 @@ void Player::PlayAnimation()
 		//待機アニメーションを再生する。
 		modelRender.PlayAnimation(enAnimationClip_Idle);
 		break;
-		//プレイヤーステートが1(ジャンプ中)だったら。
-	//case 1:
-	//	modelRender.PlayAnimation(enAnimationClip_Walk);
-	//	break;
 	}
 }
 
@@ -237,14 +232,14 @@ void Player::PlayerUI()
 void Player::PlayerAttack()
 {
 	float attackRange = 70.0f;   // 攻撃距離
-	float attackAngle = 100.0f;  // 扇状の攻撃角度（度数）
+	float attackAngle = 100.0f;  // 扇状の攻撃角度
 
 	// プレイヤーの向きベクトルを取得
 	Vector3 forward(0, 0, 1);
 	m_rotation.Apply(forward); // 回転を適用して「今向いてる方向」にする
 	forward.Normalize();
 
-	// --- 敵への攻撃判定 ---
+	// 敵への攻撃判定
 	if (m_enemy)
 	{
 		Vector3 toEnemy = m_enemy->GetPosition() - m_position;
@@ -269,7 +264,7 @@ void Player::PlayerAttack()
 		}
 	}
 
-	// --- ボスへの攻撃判定 ---
+	// ボスへの攻撃判定
 	if (m_boss)
 	{
 		Vector3 toBoss = m_boss->GetPosition() - m_position;
@@ -340,13 +335,12 @@ void Player::Invebtory()
 	bool kbZ = (GetAsyncKeyState('Z') & 0x8000) != 0;
 	bool kbC = (GetAsyncKeyState('C') & 0x8000) != 0;
 
-	// --- 開閉トグル処理 ---
-	// 1. パッドのSelectまたはXキーが「新しく押された」瞬間に切り替える
+	//インベントリ処理
 	if (padSelect || (kbX && !prevX)) {
-		m_isInventoryOpen = !m_isInventoryOpen;  // ← トグルに変更！
+		m_isInventoryOpen = !m_isInventoryOpen;	//インベントリ
 	}
 
-	// --- 開いているときのみアイテム使用 ---
+	// 開いているときのみアイテム使用
 	if (m_isInventoryOpen) {
 		if (padUseLeft || (kbZ && !prevZ)) {
 			UseItem(0);
@@ -356,7 +350,7 @@ void Player::Invebtory()
 		}
 	}
 
-	// --- 状態更新 ---
+	// 状態更新
 	prevX = kbX;
 	prevZ = kbZ;
 	prevC = kbC;
@@ -427,6 +421,7 @@ void Player::PlayerTakeDamage(int dmg)
 	if (m_PlayerHP <= 0) {
 		m_PlayerHP = 0;
 
+		//ゲームオーバーを表示する
 		NewGO<GameOver>(0, "gameover");
 		DeleteGO(this);
 		DeleteGO(m_game);

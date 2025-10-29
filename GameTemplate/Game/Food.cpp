@@ -35,11 +35,11 @@ void Food::Update()
 	Vector3 toPlayer = m_player->GetPosition() - m_position;
 	float dist = toPlayer.Length();
 
-	float pickupRange = 30.0f; // E‚¦‚é”ÍˆÍ
+	float pickupRange = 30.0f;						// E‚¦‚é”ÍˆÍ
 
 	if (dist < pickupRange) {
 		if (m_type == FoodType::Meat) {
-			m_player->AddItem(ItemType::Meat);	// HP‰ñ•œ
+			m_player->AddItem(ItemType::Meat);		// HP‰ñ•œ
 			DeleteGO(this); // E‚Á‚½‚çÁ‚¦‚é
 		}
 		else if (m_type == FoodType::Onigiri) {
