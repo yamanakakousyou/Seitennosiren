@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "Game.h"
 #include "Food.h"
-
+#include "Message.h"
 
 Food::Food()
 {
@@ -24,6 +24,7 @@ bool Food::Start()
 	m_modelRender.SetScale(7.0f, 7.0f, 7.0f);
 	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
+	m_message = FindGO<Message>("message");
 
 	return true;
 }
@@ -40,10 +41,12 @@ void Food::Update()
 	if (dist < pickupRange) {
 		if (m_type == FoodType::Meat) {
 			m_player->AddItem(ItemType::Meat);		// HPâÒïú
+			m_message->AddMessage("MeatGet");
 			DeleteGO(this); // èEÇ¡ÇΩÇÁè¡Ç¶ÇÈ
 		}
 		else if (m_type == FoodType::Onigiri) {
 			m_player->AddItem(ItemType::Onigiri);	// ñûï†ìxâÒïú
+			m_message->AddMessage("OnigiriGet");
 			DeleteGO(this); // èEÇ¡ÇΩÇÁè¡Ç¶ÇÈ
 		}
 	}

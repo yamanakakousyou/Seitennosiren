@@ -5,6 +5,7 @@ class Enemy;
 class Boss;
 class Transform;
 class GameOver;
+class Message;
 
 enum class ItemType
 {
@@ -30,7 +31,7 @@ public:
     //描画処理
     void Render(RenderContext& rc);
     //移動処理
-    void Move();
+    //void Move();
     //回転処理
     void Rotation();
     //ステート管理
@@ -112,6 +113,7 @@ public:
     Game* m_game;
     Enemy* m_enemy = nullptr;
     Boss* m_boss = nullptr;
+    Message* m_message = nullptr;
 
     int playerState = 0;//プレイヤーのステート
     int m_selectedItemIndex = 0;

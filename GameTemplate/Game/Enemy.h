@@ -2,6 +2,7 @@
 
 class Player;
 class Game;
+class Message;
 class Enemy :public IGameObject
 {
 public:
@@ -49,6 +50,7 @@ public:
 	Player* m_player = nullptr;
 	Enemy* m_enemy = nullptr;
 	Game* m_game ;
+	Message* m_message=nullptr;
 	Vector3 m_position = { 0.0f,0.0f,0.0f };		//ポジション
 	Vector3 m_moveSpeed;				//移動速度。
 	Vector3 moveDir;

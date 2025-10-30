@@ -13,6 +13,7 @@ class Enemy;
 class Boss;
 class Sord;
 class Food;
+class Message;
 class GameClear;
 enum class TurnType {
 	Player,
@@ -44,6 +45,7 @@ public:
 	Sord* m_sord;
 	Food* m_food;
 	Boss* m_boss;
+	Message* m_message;
 	GameCamera* m_gamecamera;
 	GameClear* m_gameclear;
 	Vector3 m_pos;

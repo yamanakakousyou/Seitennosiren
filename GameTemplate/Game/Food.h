@@ -2,6 +2,7 @@
 #pragma once
 class Player;
 class Game;
+class Message;
 
 // 食べ物の種類
 enum class FoodType {
@@ -30,6 +31,7 @@ public:
 
 	Player* m_player = nullptr;
 	Game* m_game = nullptr;
+	Message* m_message;
 	ModelRender			m_modelRender;
 	Vector3 m_position = Vector3::Zero;		//ポジション
 

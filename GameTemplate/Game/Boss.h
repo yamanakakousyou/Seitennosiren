@@ -4,6 +4,7 @@ class Player;
 class Game;
 class Enemy;
 class GameClear;
+class Message;
 class Boss : public Enemy
 {
 public:
@@ -34,4 +35,5 @@ private:
     int m_BossHP = 0;
 
     GameClear* m_gameclear = nullptr;
+    Message* m_message;
 };

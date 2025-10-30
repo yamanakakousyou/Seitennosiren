@@ -2,10 +2,11 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "Game.h"
+#include "Message.h"
 #include <cstdlib> // rand()用
 
 namespace {
-	const int EnemyHP = 3;
+	const int EnemyHP = 4;
 }
 
 Enemy::Enemy()
@@ -30,6 +31,7 @@ bool Enemy::Start()
 	m_modelRender.SetRotation(m_rotation);
 	m_modelRender.SetScale(0.45f, 0.45f, 0.45f);
 	m_game = FindGO<Game>("game");
+	m_message = FindGO<Message>("message");
 	//当たり判定を描画する。
 //PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 
@@ -167,6 +169,7 @@ void Enemy::EnemyAttack()
 		if (roll < 90) {
 			// プレイヤーにダメージを送るのみ。プレイヤー側で HP を管理
 			m_player->PlayerTakeDamage(1);
+			m_message->AddMessage("PlayerDamage");
 			// エフェクト/サウンドをここに追加
 		}
 		m_attackCooldown = kAttackCooldown;
@@ -188,6 +191,7 @@ void Enemy::EnemyUI()
 void Enemy::EnemyTakeDamage(int dmg)
 {
 	m_EnemyHP -= dmg;
+	
 
 	if (m_EnemyHP <= 0) {
 		m_EnemyHP = 0;
