@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "GameClear.h"
+#include "Message.h"
 
 namespace {
     const int BossHP = 5; // ボスの最大HP（雑魚敵より多め）
@@ -34,6 +35,7 @@ bool Boss::Start()
     m_game = FindGO<Game>("game");
     m_player = FindGO<Player>("player");
     m_gameclear = FindGO<GameClear>("gameclear");
+    m_message = FindGO<Message>( "message");
 
     // HP設定
     m_BossHP = BossHP;
@@ -70,6 +72,10 @@ void Boss::EnemyAttack()
         int roll = rand() % 100;
         if (roll < 80) { // 命中率
             m_player->PlayerTakeDamage(2); // 通常敵より強いダメージ
+            // 攻撃が命中したときだけメッセージを表示
+            if (m_message) {
+                m_message->AddMessage("PlayerDamage");
+            }
         }
         m_attackCooldown = kAttackCooldown;
     }
@@ -83,9 +89,9 @@ void Boss::EnemyTakeDamage(int dmg)
 void Boss::BossTakeDamage(int dmg)
 {
     m_BossHP -= dmg;
-
     if (m_BossHP <= 0) {
         m_BossHP = 0;
+
 
         //ゲームクリアを表示する
         NewGO<GameClear>(0,"gameclear");

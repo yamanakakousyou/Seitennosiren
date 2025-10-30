@@ -5,6 +5,7 @@
 #include "Boss.h"
 #include "GameOver.h"
 #include "Food.h"
+#include "Message.h"
 
 namespace {
 	const int PLAYERHP = 10;
@@ -37,6 +38,7 @@ bool Player::Start()
 	m_game = FindGO<Game>("game");
 	m_enemy = FindGO<Enemy>("enemy");
 	m_boss = FindGO<Boss>("boss");
+	m_message = FindGO<Message>("message");
 
 	//入れる
 	m_PlayerHP = PLAYERHP;
@@ -258,6 +260,7 @@ void Player::PlayerAttack()
 				if (roll < 90)
 				{
 					m_enemy->EnemyTakeDamage(m_attackPower);
+					m_message->AddMessage("EnemyDamage");
 					// ヒットエフェクト
 				}
 			}
@@ -282,6 +285,7 @@ void Player::PlayerAttack()
 				if (roll < 90)
 				{
 					m_boss->BossTakeDamage(m_attackPower);
+					m_message->AddMessage("BossDamage");
 					// ヒットエフェクト
 				}
 			}

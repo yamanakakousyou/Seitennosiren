@@ -8,6 +8,7 @@
 #include "Food.h"
 #include "Boss.h"
 #include "GameClear.h"
+#include "Message.h"
 
 
 Game::Game()
@@ -29,6 +30,8 @@ Game::~Game()
 
 	DeleteGO(m_boss);
 
+	DeleteGO(m_message);
+
 	DeleteGO(this);
 }
 
@@ -38,6 +41,7 @@ bool Game::Start()
 	m_player = NewGO<Player>(0, "player");
 	m_enemy = NewGO<Enemy>(0, "enemy");
 	m_sord = NewGO<Sord>(0, "item");
+	m_message = NewGO<Message>(0, "message");
 
 	auto meat = NewGO<Food>(0, "meat");
 	auto onigiri = NewGO<Food>(0, "onigiri");
@@ -84,8 +88,6 @@ bool Game::Start()
 void Game::Update()
 {
 	m_modelRender.Update();
-
-	
 }
 
 void Game::Render(RenderContext& rc)
