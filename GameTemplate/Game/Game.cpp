@@ -9,6 +9,7 @@
 #include "Boss.h"
 #include "GameClear.h"
 #include "Message.h"
+#include "Map.h"
 
 
 Game::Game()
@@ -42,6 +43,7 @@ bool Game::Start()
 	m_enemy = NewGO<Enemy>(0, "enemy");
 	m_sord = NewGO<Sord>(0, "item");
 	m_message = NewGO<Message>(0, "message");
+	m_map = NewGO<Map>(0, "map");
 
 	auto meat = NewGO<Food>(0, "meat");
 	auto onigiri = NewGO<Food>(0, "onigiri");
@@ -59,7 +61,7 @@ bool Game::Start()
 		// プレイヤーとエネミーの初期位置を十分離す
 		m_player->SetPosition(Vector3(m_player->m_position));
 		m_enemy->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
-		m_sord->SetPosition(Vector3(100.0f, 0.0f, 0.0f));
+		m_sord->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
 		meat->SetType(FoodType::Meat);
 		meat->SetPosition({ 100.0f, 0.0f, 0.0f });
 		onigiri->SetType(FoodType::Onigiri);
@@ -75,7 +77,7 @@ bool Game::Start()
 	// プレイヤーとエネミーの初期位置を十分離す
 		m_player->SetPosition(Vector3(m_player->m_position));
 		m_enemy->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
-		m_sord->SetPosition(Vector3(100.0f, 0.0f, 0.0f));
+		m_sord->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
 		meat->SetType(FoodType::Meat);
 		meat->SetPosition({ 100.0f, 0.0f, 0.0f });
 		onigiri->SetType(FoodType::Onigiri);
@@ -87,7 +89,7 @@ bool Game::Start()
 
 void Game::Update()
 {
-	m_modelRender.Update();
+	//m_modelRender.Update();
 }
 
 void Game::Render(RenderContext& rc)

@@ -231,6 +231,7 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="Sord.cpp" />
     <ClCompile Include="main.cpp" />
@@ -252,6 +253,7 @@
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameClear.h" />
     <ClInclude Include="GameOver.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="Sord.h" />
     <ClInclude Include="Player.h" />
