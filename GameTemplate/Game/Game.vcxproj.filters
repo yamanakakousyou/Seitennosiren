@@ -23,6 +23,7 @@
     <ClCompile Include="Sord.cpp" />
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="Message.cpp" />
+    <ClCompile Include="Map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -41,5 +42,6 @@
     <ClInclude Include="Sord.h" />
     <ClInclude Include="Food.h" />
     <ClInclude Include="Message.h" />
+    <ClInclude Include="Map.h" />
   </ItemGroup>
 </Project>

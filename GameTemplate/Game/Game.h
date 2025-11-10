@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Sord.h"
+#include "Map.h"
 
 #include "Level3DRender/LevelRender.h"
 #include <chrono>
@@ -15,6 +16,7 @@ class Sord;
 class Food;
 class Message;
 class GameClear;
+class Map;
 enum class TurnType {
 	Player,
 	Enemy
@@ -45,6 +47,7 @@ public:
 	Sord* m_sord;
 	Food* m_food;
 	Boss* m_boss;
+	Map* m_map;
 	Message* m_message;
 	GameCamera* m_gamecamera;
 	GameClear* m_gameclear;
