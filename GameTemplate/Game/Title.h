@@ -1,5 +1,6 @@
 #pragma once
 class Game;
+class Describe;
 class Title : public IGameObject
 {
 public:
@@ -11,4 +12,5 @@ public:
     //スプライトレンダ―。
     SpriteRender spriteRender;
     Game* m_game;
+    Describe* m_describe;
 };
