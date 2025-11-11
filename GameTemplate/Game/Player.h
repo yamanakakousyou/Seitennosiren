@@ -13,6 +13,14 @@ enum class ItemType
     Onigiri
 };
 
+enum class PlayerState {
+    Idle,
+    Walk,
+    Attack
+};
+
+
+
 // インベントリ内のアイテム情報
 struct InventoryItem {
     ItemType type;       // アイテムの種類
@@ -117,6 +125,7 @@ public:
 
     int playerState = 0;//プレイヤーのステート
     int m_selectedItemIndex = 0;
+    int m_currentAnim = -1; // 現在再生中のアニメ番号
 
     // 入力の前回状態を記録（押しっぱなし防止）
     bool m_prevUp = false;
@@ -136,4 +145,7 @@ public:
 
     bool m_isInventoryOpen = false;            // インベントリを開いているかどうか
     std::vector<InventoryItem> m_inventory;    // プレイヤーが持っているアイテム一覧
+
+    PlayerState m_state = PlayerState::Idle;
+    float m_attackTimer = 0.0f;
 };

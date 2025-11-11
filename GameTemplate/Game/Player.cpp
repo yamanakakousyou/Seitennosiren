@@ -21,7 +21,7 @@ bool Player::Start()
 	animationClips[enAnimationClip_Walk].Load("Assets/animData/PlayerWalk.tka");
 	animationClips[enAnimationClip_Walk].SetLoopFlag(true);
 	animationClips[enAnimationClip_Attack].Load("Assets/animData/PlayerAttack.tka");
-	animationClips[enAnimationClip_Attack].SetLoopFlag(true);
+	animationClips[enAnimationClip_Attack].SetLoopFlag(false);
 	//モデルを初期化する
 	modelRender.Init("Assets/modelData/Player.tkm", animationClips, enAnimationClip_Num, enModelUpAxisZ);
 
@@ -54,6 +54,10 @@ bool Player::Start()
 	m_satietyRender.SetPosition({ -200.0f,430.0f,0.0f });
 	m_satietyRender.SetScale({ 0.5f,0.5f,0.5f });
 	m_satietyRender.SetPivot(Vector2(0.0f, 0.5f));
+
+	m_state = PlayerState::Idle;
+	m_attackTimer = 0.0f;
+	m_currentAnim = -1;
 	return true;
 }
 
@@ -67,6 +71,19 @@ Player::~Player()
 
 void Player::Update()
 {
+
+	float deltaTime = g_gameTime->GetFrameDeltaTime();
+
+	// 攻撃中タイマー更新
+	if (m_state == PlayerState::Attack)
+	{
+		m_attackTimer -= deltaTime;
+		if (m_attackTimer <= 0.0f)
+		{
+			m_state = PlayerState::Idle;
+			modelRender.PlayAnimation(enAnimationClip_Idle);
+		}
+	}
 	PlayerMoveTurn();
 	ManageState();
 	PlayAnimation();
@@ -94,33 +111,33 @@ void Player::Rotation()
 
 void Player::ManageState()
 {
-	//xかzの移動速度があったら(スティックの入力があったら)。
-	if (fabsf(moveSpeed.x) >= 0.001f || fabsf(moveSpeed.z) >= 0.001f)
-	{
+	////xかzの移動速度があったら(スティックの入力があったら)。
+	//if (fabsf(moveSpeed.x) >= 0.001f || fabsf(moveSpeed.z) >= 0.001f)
+	//{
 
-		playerState = 1;
+	//	playerState = 1;
 
-		modelRender.PlayAnimation(enAnimationClip_Walk);
-	}
-	else
-	{
+	//	modelRender.PlayAnimation(enAnimationClip_Walk);
+	//}
+	//else
+	//{
 
-		//ステートを0(待機)にする。
-		playerState = 0;
-		modelRender.PlayAnimation(enAnimationClip_Idle);
-	}
+	//	//ステートを0(待機)にする。
+	//	playerState = 0;
+	//	modelRender.PlayAnimation(enAnimationClip_Idle);
+	//}
 }
 
 void Player::PlayAnimation()
 {
-	switch (playerState)
-	{
-		//プレイヤーステートが0(待機)だったら。
-	case 0:
-		//待機アニメーションを再生する。
-		modelRender.PlayAnimation(enAnimationClip_Idle);
-		break;
-	}
+	//switch (playerState)
+	//{
+	//	//プレイヤーステートが0(待機)だったら。
+	//case 0:
+	//	//待機アニメーションを再生する。
+	//	modelRender.PlayAnimation(enAnimationClip_Idle);
+	//	break;
+	//}
 }
 
 void Player::PlayerMoveTurn()
@@ -185,14 +202,23 @@ void Player::PlayerMoveTurn()
 	wasPressed = isPressed; // 状態更新
 
 	// 攻撃ボタン
-	if (g_pad[0]->IsTrigger(enButtonB)) {
+	if (g_pad[0]->IsTrigger(enButtonB))
+	{
+		// すでに攻撃中なら無視
+		if (m_state == PlayerState::Attack) return;
+
+		// 攻撃ステートに移行
+		m_state = PlayerState::Attack;
+		m_attackTimer = 1.0f; // 攻撃アニメ時間（秒）
+		m_currentAnim = -1;   // アニメリセット
 		modelRender.PlayAnimation(enAnimationClip_Attack);
+
+		// 攻撃処理
 		PlayerAttack();
 
 		m_satiety -= 1;
 		if (m_satiety < 0) {
 			m_satiety = 0;
-			// 満腹度0ならHPが減る
 			m_PlayerHP -= 1;
 			if (m_PlayerHP < 0) m_PlayerHP = 0;
 		}
