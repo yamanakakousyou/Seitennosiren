@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Title.h"
 #include "Game.h"
+#include "Describe.h"
 
 Title::Title()
 {
@@ -17,8 +18,7 @@ void Title::Update()
 {
 	if (g_pad[0]->IsTrigger(enButtonA))
 	{
-
-		NewGO<Game>(0, "game");
+		NewGO<Describe>(0, "describe");
 		DeleteGO(this);
 	}
 }
