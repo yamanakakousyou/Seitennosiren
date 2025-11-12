@@ -148,4 +148,5 @@ public:
 
     PlayerState m_state = PlayerState::Idle;
     float m_attackTimer = 0.0f;
+    float m_moveTimer = 0.0f;
 };

@@ -19,7 +19,7 @@ bool Player::Start()
 	animationClips[enAnimationClip_Idle].Load("Assets/animData/Playeridle.tka");
 	animationClips[enAnimationClip_Idle].SetLoopFlag(true);
 	animationClips[enAnimationClip_Walk].Load("Assets/animData/PlayerWalk.tka");
-	animationClips[enAnimationClip_Walk].SetLoopFlag(true);
+	animationClips[enAnimationClip_Walk].SetLoopFlag(false);
 	animationClips[enAnimationClip_Attack].Load("Assets/animData/PlayerAttack.tka");
 	animationClips[enAnimationClip_Attack].SetLoopFlag(false);
 	//モデルを初期化する
@@ -79,6 +79,17 @@ void Player::Update()
 	{
 		m_attackTimer -= deltaTime;
 		if (m_attackTimer <= 0.0f)
+		{
+			m_state = PlayerState::Idle;
+			modelRender.PlayAnimation(enAnimationClip_Idle);
+		}
+	}
+
+	//移動タイマー更新
+	if (m_state == PlayerState::Walk)
+	{
+		m_moveTimer -= deltaTime;
+		if (m_moveTimer <= 0.0f)
 		{
 			m_state = PlayerState::Idle;
 			modelRender.PlayAnimation(enAnimationClip_Idle);
@@ -186,6 +197,15 @@ void Player::PlayerMoveTurn()
 		Quaternion rot;
 		rot.SetRotationY(angle);
 		modelRender.SetRotation(rot);
+
+		// すでに攻撃中なら無視
+		if (m_state == PlayerState::Attack) return;
+
+		// 攻撃ステートに移行
+		m_state = PlayerState::Walk;
+		m_moveTimer = 0.08f; // 攻撃アニメ時間（秒）
+		m_currentAnim = -1;   // アニメリセット
+		modelRender.PlayAnimation(enAnimationClip_Walk);
 
 		m_satiety -= 1;
 		if (m_satiety < 0) {
