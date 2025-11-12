@@ -84,6 +84,17 @@ bool Game::Start()
 		onigiri->SetPosition({ 200.0f, 0.0f, 0.0f });
 	}
 
+	if (stageID == 2)
+	{
+		m_player->SetPosition(Vector3(m_player->m_position));
+		m_enemy->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
+		m_sord->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
+		meat->SetType(FoodType::Meat);
+		meat->SetPosition({ 100.0f, 0.0f, 0.0f });
+		onigiri->SetType(FoodType::Onigiri);
+		onigiri->SetPosition({ 200.0f, 0.0f, 0.0f });
+	}
+
 	return true;
 }
 
