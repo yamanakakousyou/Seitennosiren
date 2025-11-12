@@ -8,16 +8,13 @@ BackGround::BackGround()
     m_stageID = rand() % 2; // 0‚©1‚ðƒ‰ƒ“ƒ_ƒ€
 
     if (m_stageID == 0) {
-        modelRender.Init("Assets/modelData/stage3/stage1.tkm");
+        modelRender.Init("Assets/modelData/stage1/stage1.tkm");
     }
     if(m_stageID==1) {
-        modelRender.Init("Assets/modelData/stage4/stage2.1.tkm");
+        modelRender.Init("Assets/modelData/stage2/stage2.1.tkm");
     }
-    //if (stageID == 2) {
-    //    modelRender.Init("Assets/modelData/stage4/stage2.tkm");
-    //}
-    //if (stageID == 3) {
-    //    modelRender.Init("Assets/modelData/stage4/stage2.tkm");
+    //if (m_stageID == 2) {
+    //    modelRender.Init("Assets/modelData/stage3/stage3.tkm");
     //}
 
     physicsStaticObject.CreateFromModel(modelRender.GetModel(),
