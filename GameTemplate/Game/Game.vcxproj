@@ -234,6 +234,7 @@
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Message.cpp" />
+    <ClCompile Include="Pouse.cpp" />
     <ClCompile Include="Rule.cpp" />
     <ClCompile Include="Sord.cpp" />
     <ClCompile Include="main.cpp" />
@@ -258,6 +259,7 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Message.h" />
+    <ClInclude Include="Pouse.h" />
     <ClInclude Include="Rule.h" />
     <ClInclude Include="Sord.h" />
     <ClInclude Include="Player.h" />

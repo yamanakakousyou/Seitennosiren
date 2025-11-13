@@ -10,6 +10,8 @@
 #include "GameClear.h"
 #include "Message.h"
 #include "Map.h"
+#include "Title.h"
+#include "Pouse.h"
 
 
 Game::Game()
@@ -100,7 +102,21 @@ bool Game::Start()
 
 void Game::Update()
 {
-	//m_modelRender.Update();
+	// STARTでポーズ画面生成
+	if (g_pad[0] && g_pad[0]->IsTrigger(enButtonStart))
+	{
+		if (!FindGO<Pouse>("pouse"))
+		{
+			NewGO<Pouse>(0, "pouse");
+		}
+		return; // ゲーム本体停止
+	}
+
+	// ポーズ中はゲーム本体更新を止める
+	if (FindGO<Pouse>("pouse"))
+	{
+		return;
+	}
 }
 
 void Game::Render(RenderContext& rc)

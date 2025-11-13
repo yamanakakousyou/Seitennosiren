@@ -6,6 +6,7 @@ class Boss;
 class Transform;
 class GameOver;
 class Message;
+class Pouse;
 
 enum class ItemType
 {
@@ -122,6 +123,7 @@ public:
     Enemy* m_enemy = nullptr;
     Boss* m_boss = nullptr;
     Message* m_message = nullptr;
+    Pouse* m_pouse = nullptr;
 
     int playerState = 0;//プレイヤーのステート
     int m_selectedItemIndex = 0;

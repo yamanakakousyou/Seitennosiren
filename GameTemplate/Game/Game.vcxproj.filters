@@ -26,6 +26,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Describe.cpp" />
     <ClCompile Include="Rule.cpp" />
+    <ClCompile Include="Pouse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -47,5 +48,6 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Describe.h" />
     <ClInclude Include="Rule.h" />
+    <ClInclude Include="Pouse.h" />
   </ItemGroup>
 </Project>

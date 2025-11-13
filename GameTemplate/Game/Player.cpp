@@ -6,6 +6,7 @@
 #include "GameOver.h"
 #include "Food.h"
 #include "Message.h"
+#include "Pouse.h"
 
 namespace {
 	const int PLAYERHP = 10;
@@ -71,6 +72,12 @@ Player::~Player()
 
 void Player::Update()
 {
+
+	m_pouse = FindGO<Pouse>("pouse");
+	if (m_pouse)
+	{
+		return; 
+	}
 
 	float deltaTime = g_gameTime->GetFrameDeltaTime();
 
