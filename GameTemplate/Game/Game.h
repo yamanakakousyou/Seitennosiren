@@ -17,6 +17,9 @@ class Food;
 class Message;
 class GameClear;
 class Map;
+class Title;
+class Pouse;
+
 enum class TurnType {
 	Player,
 	Enemy
@@ -48,9 +51,11 @@ public:
 	Food* m_food;
 	Boss* m_boss;
 	Map* m_map;
+	Pouse* m_pouse;
 	Message* m_message;
 	GameCamera* m_gamecamera;
 	GameClear* m_gameclear;
+	Title* m_title;
 	Vector3 m_pos;
 	TurnType m_currentTurn = TurnType::Player;
 	std::chrono::steady_clock::time_point m_enemyTurnStartTime;
