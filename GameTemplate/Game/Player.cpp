@@ -203,6 +203,7 @@ void Player::PlayerMoveTurn()
 		float angle = atan2f(moveDir.x, moveDir.z);
 		Quaternion rot;
 		rot.SetRotationY(angle);
+		m_rotation = rot;
 		modelRender.SetRotation(rot);
 
 		// Ç∑Ç≈Ç…çUåÇíÜÇ»ÇÁñ≥éã
