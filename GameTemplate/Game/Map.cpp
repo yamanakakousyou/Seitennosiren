@@ -7,6 +7,7 @@
 #include "Sord.h"
 #include "Food.h"
 #include "BackGround.h"
+#include "Pouse.h"
 
 namespace {
     const float MAP_SIZE = 200.0f;  // ミニマップの大きさ
@@ -50,6 +51,9 @@ bool Map::Start()
 
 void Map::Update()
 {
+    if (FindGO<Pouse>("pouse")) {
+        return;
+    }
     m_back.Update();
     m_back2.Update();
 }

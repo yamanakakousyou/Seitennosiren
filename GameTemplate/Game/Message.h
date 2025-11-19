@@ -10,6 +10,8 @@ struct MessageData
     std::chrono::steady_clock::time_point startTime;
 };
 
+class Pouse;
+
 class Message : public IGameObject
 {
 public:

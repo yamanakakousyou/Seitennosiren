@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameCamera.h"
 #include "Player.h"
+#include "Pouse.h"
 GameCamera::GameCamera()
 {
 
@@ -27,6 +28,10 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
+
+	if (FindGO<Pouse>("pouse")) {
+		return;
+	}
 	//カメラを更新。
 //注視点を計算する。
 	Vector3 target = player->m_position;

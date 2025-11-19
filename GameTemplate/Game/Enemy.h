@@ -3,6 +3,7 @@
 class Player;
 class Game;
 class Message;
+class Pouse;
 class Enemy :public IGameObject
 {
 public:

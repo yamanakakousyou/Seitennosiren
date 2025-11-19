@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Game.h"
 #include "Message.h"
+#include "Pouse.h"
 #include <cstdlib> // rand()用
 
 namespace {
@@ -41,6 +42,9 @@ bool Enemy::Start()
 
 void Enemy::Update()
 {
+	if (FindGO<Pouse>("pouse")) {
+		return;
+	}
 	// アニメ・その他処理
 	m_modelRender.Update();
 	m_EnemyspriteRender.Update();

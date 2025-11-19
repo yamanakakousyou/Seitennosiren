@@ -7,6 +7,7 @@ class Enemy;
 class Boss;
 class Sord;
 class Food;
+class Pouse;
 
 class Map :public IGameObject
 {
