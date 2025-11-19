@@ -107,6 +107,7 @@ public:
 
     ModelRender     modelRender;
     SpriteRender    m_spriteRender;
+    FontRender      m_pouseFontRender;
     FontRender		m_fontRender;
     FontRender      m_satietyFontRender;
     FontRender      m_itemFontRender;

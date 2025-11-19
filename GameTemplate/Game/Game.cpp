@@ -108,16 +108,6 @@ void Game::Update()
 		return;    // Game 自体の処理は止まる
 	}
 
-	// STARTでポーズ画面生成
-	if (g_pad[0] && g_pad[0]->IsTrigger(enButtonStart))
-	{
-		if (!FindGO<Pouse>("pouse"))
-		{
-			NewGO<Pouse>(0, "pouse");
-		}
-		return; // ゲーム本体停止
-	}
-
 	// ポーズ中はゲーム本体更新を止める
 	if (FindGO<Pouse>("pouse"))
 	{

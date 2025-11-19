@@ -403,12 +403,36 @@ void Player::Invebtory()
 		if (padUseRight || (kbC && !prevC)) {
 			UseItem(1);
 		}
+		else
+		{
+			wchar_t pouseText[32];
+			swprintf_s(pouseText, sizeof(pouseText) / sizeof(wchar_t), L"3: その他");
+
+			m_pouseFontRender.SetText(pouseText);
+			m_pouseFontRender.SetPosition({ -600.0f, -110.0f, 0.0f });
+			m_pouseFontRender.SetScale(1.0);
+			m_pouseFontRender.SetColor(g_vec4Black);
+		}
+
+		// STARTでポーズ画面生成
+		if (g_pad[0] && g_pad[0]->IsTrigger(enButtonStart))
+		{
+			if (!FindGO<Pouse>("pouse"))
+			{
+				NewGO<Pouse>(0, "pouse");
+			}
+			return; // ゲーム本体停止
+		}
 	}
 
 	// 状態更新
 	prevX = kbX;
 	prevZ = kbZ;
 	prevC = kbC;
+
+	if (!m_isInventoryOpen) {
+		m_pouseFontRender.SetText(L"");  // その他を非表示に
+	}
 }
 
 void Player::AddItem(ItemType type)
@@ -488,6 +512,7 @@ void Player::Render(RenderContext& renderContext)
 {
 	modelRender.Draw(renderContext);
 	m_spriteRender.Draw(renderContext);
+	m_pouseFontRender.Draw(renderContext);
 	m_fontRender.Draw(renderContext);
 	m_itemFontRender.Draw(renderContext);
 	m_satietyRender.Draw(renderContext);
