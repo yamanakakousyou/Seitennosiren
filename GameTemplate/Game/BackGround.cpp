@@ -21,7 +21,7 @@ BackGround::BackGround()
         modelRender.GetModel().GetWorldMatrix());
 
     // 当たり判定デバッグ用
-     PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+     //PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 }
 
 BackGround::~BackGround()
