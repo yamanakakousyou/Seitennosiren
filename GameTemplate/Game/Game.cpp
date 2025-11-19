@@ -102,6 +102,12 @@ bool Game::Start()
 
 void Game::Update()
 {
+
+	// ポーズ中なら何もしない
+	if (FindGO<Pouse>("pouse")) {
+		return;    // Game 自体の処理は止まる
+	}
+
 	// STARTでポーズ画面生成
 	if (g_pad[0] && g_pad[0]->IsTrigger(enButtonStart))
 	{

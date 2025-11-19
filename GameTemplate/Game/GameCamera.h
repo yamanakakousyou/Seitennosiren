@@ -1,5 +1,6 @@
 #pragma once
 class Player;
+class Pouse;
 class GameCamera : public IGameObject
 {
 public:

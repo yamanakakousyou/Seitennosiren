@@ -1,6 +1,7 @@
 #pragma once
 class Player;
 class Game;
+class Pouse;
 
 class Sord :public IGameObject
 {

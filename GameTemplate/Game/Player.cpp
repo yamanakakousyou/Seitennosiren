@@ -72,11 +72,8 @@ Player::~Player()
 
 void Player::Update()
 {
-
-	m_pouse = FindGO<Pouse>("pouse");
-	if (m_pouse)
-	{
-		return; 
+	if (FindGO<Pouse>("pouse")) {
+		return;
 	}
 
 	float deltaTime = g_gameTime->GetFrameDeltaTime();

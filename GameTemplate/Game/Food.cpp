@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Food.h"
 #include "Message.h"
+#include "Pouse.h"
 
 Food::Food()
 {
@@ -31,6 +32,10 @@ bool Food::Start()
 
 void Food::Update()
 {
+	if (FindGO<Pouse>("pouse")) {
+		return;
+	}
+
 	if (!m_player) return;
 
 	Vector3 toPlayer = m_player->GetPosition() - m_position;

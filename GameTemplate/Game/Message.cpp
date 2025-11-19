@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Message.h"
+#include "Pouse.h"
 
 Message::Message()
 {
@@ -33,6 +34,9 @@ void Message::NextMessage()
 
 void Message::Update()
 {
+    if (FindGO<Pouse>("pouse")) {
+        return;
+    }
     m_spriteRender.Update();
 }
 

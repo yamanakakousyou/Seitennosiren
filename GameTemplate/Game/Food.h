@@ -3,6 +3,7 @@
 class Player;
 class Game;
 class Message;
+class Pouse;
 
 // H‚×•¨‚Ìí—Ş
 enum class FoodType {

@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "GameClear.h"
 #include "Message.h"
+#include "Pouse.h"
 
 namespace {
     const int BossHP = 5; // ボスの最大HP（雑魚敵より多め）
@@ -48,6 +49,9 @@ bool Boss::Start()
 
 void Boss::Update()
 {
+    if (FindGO<Pouse>("pouse")) {
+        return;
+    }
     // Enemyの通常処理
     Enemy::Update();
     Enemy::EnemyTurn();

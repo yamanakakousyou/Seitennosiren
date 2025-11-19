@@ -5,6 +5,7 @@ class Game;
 class Enemy;
 class GameClear;
 class Message;
+class Pouse;
 class Boss : public Enemy
 {
 public:

@@ -2,6 +2,7 @@
 #include "Sord.h"
 #include "Player.h"
 #include "Game.h"
+#include "Pouse.h"
 
 namespace {
 	const float BUFF_MULTIPIER = 2.0f;		//ÉoÉtÇÃî{ó¶ÅB
@@ -29,6 +30,9 @@ bool Sord::Start()
 
 void Sord::Update()
 {
+	if (FindGO<Pouse>("pouse")) {
+		return;
+	}
 	if (!m_player) return;
 
 	Vector3 toPlayer = m_player->GetPosition() - m_position;
