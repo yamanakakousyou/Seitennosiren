@@ -2,6 +2,14 @@
 #include "Pouse.h"
 #include "Game.h"
 #include "Title.h"
+#include "Player.h"
+#include "Enemy.h"
+#include "Sord.h"
+#include "Food.h"
+#include "Boss.h"
+#include "BackGround.h"
+#include "GameCamera.h"
+#include "Message.h"
 
 Pouse::Pouse()
 {
@@ -33,16 +41,29 @@ void Pouse::Update()
 
     // Aボタンでタイトルに戻る
     if (g_pad[0]->IsTrigger(enButtonA)) {
-        // ゲーム本体を破棄
-        m_game = FindGO<Game>("game");
-        if (m_game) DeleteGO(m_game);
+
+        DeleteGO(FindGO<Player>("player"));
+        DeleteGO(FindGO<Enemy>("enemy"));
+        DeleteGO(FindGO<Sord>("item"));
+        DeleteGO(FindGO<Food>("meat"));
+        DeleteGO(FindGO<Food>("onigiri"));
+        DeleteGO(FindGO<BackGround>("backGround"));
+        DeleteGO(FindGO<GameCamera>("gamecamera"));
+        DeleteGO(FindGO<Message>("message"));
+        DeleteGO(FindGO<Map>("map"));
+
+        // 最後にGameを削除
+        DeleteGO(FindGO<Game>("game"));
 
         // タイトルを生成
         NewGO<Title>(0, "title");
 
-        // 自分(Pouse)を破棄
+        // 自分(Pouse)も削除
         DeleteGO(this);
         return;
+        //// ゲーム本体を破棄
+        //m_game = FindGO<Game>("game");
+        //if (m_game) DeleteGO(m_game);
     }
 }
 

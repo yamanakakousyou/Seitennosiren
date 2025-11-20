@@ -60,7 +60,7 @@ bool Game::Start()
 
 	if (stageID == 0)
 	{
-		// プレイヤーとエネミーの初期位置を十分離す
+		//ステージ1生成時の位置
 		m_player->SetPosition(Vector3(m_player->m_position));
 		m_enemy->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
 		m_sord->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
@@ -72,29 +72,26 @@ bool Game::Start()
 
 	if (stageID == 1)
 	{
-		//m_player->SetPosition(Vector3(m_player->m_position));
-		//m_enemy->SetPosition(Vector3(400.0f, 0.0f, 0.0f));
-		//m_item->SetPosition(Vector3(100.0f, 0.0f, 0.0f));
-		//m_boss->SetPosition(Vector3(-300.0f, 0.0f, 0.0f));
-	// プレイヤーとエネミーの初期位置を十分離す
+		//ステージ2生成時の位置
 		m_player->SetPosition(Vector3(m_player->m_position));
-		m_enemy->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
+		m_enemy->SetPosition(Vector3(-300.0f, 0.0f, 0.0f));
 		m_sord->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
 		meat->SetType(FoodType::Meat);
-		meat->SetPosition({ 100.0f, 0.0f, 0.0f });
+		meat->SetPosition({ -100.0f, 0.0f, 0.0f });
 		onigiri->SetType(FoodType::Onigiri);
 		onigiri->SetPosition({ 200.0f, 0.0f, 0.0f });
 	}
 
 	if (stageID == 2)
 	{
+		//ステージ3生成時の位置
 		m_player->SetPosition(Vector3(m_player->m_position));
-		m_enemy->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
+		m_enemy->SetPosition(Vector3(200.0f, 0.0f, 0.0f));
 		m_sord->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
 		meat->SetType(FoodType::Meat);
-		meat->SetPosition({ 100.0f, 0.0f, 0.0f });
+		meat->SetPosition({ 300.0f, 0.0f, 0.0f });
 		onigiri->SetType(FoodType::Onigiri);
-		onigiri->SetPosition({ 200.0f, 0.0f, 0.0f });
+		onigiri->SetPosition({ 450.0f, 0.0f, 0.0f });
 	}
 
 	return true;
@@ -106,12 +103,6 @@ void Game::Update()
 	// ポーズ中なら何もしない
 	if (FindGO<Pouse>("pouse")) {
 		return;    // Game 自体の処理は止まる
-	}
-
-	// ポーズ中はゲーム本体更新を止める
-	if (FindGO<Pouse>("pouse"))
-	{
-		return;
 	}
 }
 
