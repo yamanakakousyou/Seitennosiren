@@ -2,7 +2,15 @@
 
 class Game;
 class Title;
-
+class Player;
+class Enemy;
+class Food;
+class Sord;
+class Map;
+class Boos;
+class BackGround;
+class GameCamera;
+class Message;
 class Pouse:public IGameObject
 {
 public:
