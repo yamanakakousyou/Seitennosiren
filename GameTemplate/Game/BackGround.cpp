@@ -5,7 +5,7 @@
 BackGround::BackGround()
 {
     srand((unsigned)time(nullptr));
-    m_stageID = rand() % 3; // 0‚©1‚ðƒ‰ƒ“ƒ_ƒ€
+    m_stageID = rand() % 2; // 0‚©1‚ðƒ‰ƒ“ƒ_ƒ€
 
     if (m_stageID == 0) {
         modelRender.Init("Assets/modelData/stage1/stage1.tkm");
@@ -13,9 +13,9 @@ BackGround::BackGround()
     if(m_stageID==1) {
         modelRender.Init("Assets/modelData/stage2/stage2.1.tkm");
     }
-    if (m_stageID == 2) {
-        modelRender.Init("Assets/modelData/stage3/stage3.tkm");
-    }
+    //if (m_stageID == 2) {
+    //    modelRender.Init("Assets/modelData/stage3/stage3.tkm");
+    //}
 
     physicsStaticObject.CreateFromModel(modelRender.GetModel(),
         modelRender.GetModel().GetWorldMatrix());

@@ -390,49 +390,58 @@ void Player::Invebtory()
 	bool kbZ = (GetAsyncKeyState('Z') & 0x8000) != 0;
 	bool kbC = (GetAsyncKeyState('C') & 0x8000) != 0;
 
-	//インベントリ処理
-	if (padSelect || (kbX && !prevX)) {
-		m_isInventoryOpen = !m_isInventoryOpen;	//インベントリ
+	// 追加：十字キー入力
+	bool padUp = (g_pad[0] && g_pad[0]->IsTrigger(enButtonUp));
+	bool padDown = (g_pad[0] && g_pad[0]->IsTrigger(enButtonDown));
+	bool padA = (g_pad[0] && g_pad[0]->IsTrigger(enButtonA));
+
+	// キーボード版 IsTrigger
+	bool isTriggerX = kbX && !prevX;
+
+	// --- インベントリ開閉 ---
+	if (padSelect || isTriggerX) {
+		m_isInventoryOpen = !m_isInventoryOpen;
+		m_inventoryCursor = 0;
 	}
+
+	// --- フレーム終了時に更新 ---
+	prevX = kbX;
 
 	// 開いているときのみアイテム使用
-	if (m_isInventoryOpen) {
-		if (padUseLeft || (kbZ && !prevZ)) {
-			UseItem(0);
-		}
-		if (padUseRight || (kbC && !prevC)) {
-			UseItem(1);
-		}
-		else
-		{
-			wchar_t pouseText[32];
-			swprintf_s(pouseText, sizeof(pouseText) / sizeof(wchar_t), L"3: その他");
+if (m_isInventoryOpen) {
 
-			m_pouseFontRender.SetText(pouseText);
-			m_pouseFontRender.SetPosition({ -600.0f, -110.0f, 0.0f });
-			m_pouseFontRender.SetScale(1.0);
-			m_pouseFontRender.SetColor(g_vec4Black);
-		}
+    const int maxCursor = 2;  // 1番, 2番, その他 → 常に2
 
-		// STARTでポーズ画面生成
-		if (g_pad[0] && g_pad[0]->IsTrigger(enButtonStart))
-		{
-			if (!FindGO<Pouse>("pouse"))
-			{
-				NewGO<Pouse>(0, "pouse");
-			}
-			return; // ゲーム本体停止
-		}
-	}
+    // 上移動
+    if (padUp) {
+        m_inventoryCursor--;
+        if (m_inventoryCursor < 0)
+            m_inventoryCursor = 0;
+    }
 
-	// 状態更新
-	prevX = kbX;
-	prevZ = kbZ;
-	prevC = kbC;
+    // 下移動
+    if (padDown) {
+        m_inventoryCursor++;
+        if (m_inventoryCursor > maxCursor)
+            m_inventoryCursor = maxCursor;
+    }
 
-	if (!m_isInventoryOpen) {
-		m_pouseFontRender.SetText(L"");  // その他を非表示に
-	}
+    // Aボタン
+    if (padA) {
+
+        if (m_inventoryCursor <= 1 && m_inventoryCursor < m_inventory.size()) {
+            // アイテム使用
+            UseItem(m_inventoryCursor);
+        }
+        else if (m_inventoryCursor == 2) {
+            // その他 → ポーズ画面
+            if (!FindGO<Pouse>("pouse")) {
+                NewGO<Pouse>(0, "pouse");
+            }
+            return;
+        }
+    }
+}
 }
 
 void Player::AddItem(ItemType type)
@@ -478,14 +487,39 @@ void Player::UseItem(int index)
 void Player::DrawInventory(RenderContext& rc)
 {	
 	if (!m_isInventoryOpen) {
-		m_itemFontRender.SetText(L""); // 空文字をセット
+		m_itemFontRender.SetText(L"");
 		return;
 	}
 
 	std::wstring allText;
-	for (int i = 0; i < m_inventory.size(); ++i) {
-		allText += std::to_wstring(i + 1) + L": " + std::wstring(m_inventory[i].name.begin(), m_inventory[i].name.end()) + L"\n";
+
+	// 1番アイテム（ある場合）
+	if (m_inventory.size() > 0)
+	{
+		allText += (m_inventoryCursor == 0 ? L"> " : L"  ");
+		allText += L"1: " + std::wstring(m_inventory[0].name.begin(), m_inventory[0].name.end()) + L"\n";
 	}
+	else
+	{
+		allText += (m_inventoryCursor == 0 ? L"> " : L"  ");
+		allText += L"1: ----\n";
+	}
+
+	// 2番アイテム（ある場合）
+	if (m_inventory.size() > 1)
+	{
+		allText += (m_inventoryCursor == 1 ? L"> " : L"  ");
+		allText += L"2: " + std::wstring(m_inventory[1].name.begin(), m_inventory[1].name.end()) + L"\n";
+	}
+	else
+	{
+		allText += (m_inventoryCursor == 1 ? L"> " : L"  ");
+		allText += L"2: ----\n";
+	}
+
+	// 3番：その他（必ず出す）
+	allText += (m_inventoryCursor == 2 ? L"> " : L"  ");
+	allText += L"3: その他";
 
 	m_itemFontRender.SetText(allText.c_str());
 	m_itemFontRender.SetPosition({ -600.0f, 0.0f, 0.0f });

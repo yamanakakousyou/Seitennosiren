@@ -147,6 +147,7 @@ public:
     const float kAttackCooldown = 0.5f; // 0.5 秒のクールダウン
 
     bool m_isInventoryOpen = false;            // インベントリを開いているかどうか
+    int m_inventoryCursor = 0;
     std::vector<InventoryItem> m_inventory;    // プレイヤーが持っているアイテム一覧
 
     PlayerState m_state = PlayerState::Idle;
