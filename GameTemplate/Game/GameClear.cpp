@@ -13,13 +13,21 @@ GameClear::GameClear()
 
 GameClear::~GameClear()
 {
-
+	DeleteGO(m_soundSource);
 }
 
 bool GameClear::Start()
 {
 	m_spriteRender.Init("Assets/sprite/GameClear.dds", 1920.0f, 1080.0f);
 	//m_game = FindGO<Game>("game");
+
+	//BGM.
+	g_soundEngine->ResistWaveFileBank(3, "Assets/sound/Gameclear .wav");
+	m_soundSource = NewGO<SoundSource>(0);
+	//ResistWaveFileBankで指定した番号。
+	m_soundSource->Init(3);
+	//BGMは曲をループさせる。
+	m_soundSource->Play(true);
 	return true;
 }
 

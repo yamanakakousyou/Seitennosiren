@@ -35,6 +35,8 @@ Game::~Game()
 
 	DeleteGO(m_message);
 
+	DeleteGO(m_soundSource);
+
 	DeleteGO(this);
 }
 
@@ -93,6 +95,13 @@ bool Game::Start()
 		onigiri->SetType(FoodType::Onigiri);
 		onigiri->SetPosition({ 450.0f, 0.0f, 0.0f });
 	}
+
+	g_soundEngine->ResistWaveFileBank(1, "Assets/sound/BGM.wav");
+	m_soundSource = NewGO<SoundSource>(0);
+	//ResistWaveFileBankで指定した番号。
+	m_soundSource->Init(1);
+	//BGMは曲をループさせる。
+	m_soundSource->Play(true);
 
 	return true;
 }

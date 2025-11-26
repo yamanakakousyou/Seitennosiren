@@ -27,6 +27,8 @@ bool Food::Start()
 	m_player = FindGO<Player>("player");
 	m_message = FindGO<Message>("message");
 
+	g_soundEngine->ResistWaveFileBank(5, "Assets/sound/GetItem.wav");	//‰¹‚Ì“Ç‚İ‚İB
+
 	return true;
 }
 
@@ -46,11 +48,17 @@ void Food::Update()
 	if (dist < pickupRange) {
 		if (m_type == FoodType::Meat) {
 			m_player->AddItem(ItemType::Meat);		// HP‰ñ•œ
+			SoundSource* se = NewGO<SoundSource>(0);
+			se->Init(5);
+			se->Play(false);
 			m_message->AddMessage("MeatGet");
 			DeleteGO(this); // E‚Á‚½‚çÁ‚¦‚é
 		}
 		else if (m_type == FoodType::Onigiri) {
 			m_player->AddItem(ItemType::Onigiri);	// –• “x‰ñ•œ
+			SoundSource* se = NewGO<SoundSource>(0);
+			se->Init(5);
+			se->Play(false);
 			m_message->AddMessage("OnigiriGet");
 			DeleteGO(this); // E‚Á‚½‚çÁ‚¦‚é
 		}

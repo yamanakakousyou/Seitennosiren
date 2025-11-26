@@ -78,6 +78,9 @@ void Boss::EnemyAttack()
             m_player->PlayerTakeDamage(2); // 通常敵より強いダメージ
             // 攻撃が命中したときだけメッセージを表示
             if (m_message) {
+                auto se = NewGO<SoundSource>(0);
+                se->Init(7);       // ← WaveFileBank の番号
+                se->Play(false);
                 m_message->AddMessage("PlayerDamage");
             }
         }

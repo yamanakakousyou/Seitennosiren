@@ -61,6 +61,8 @@ public:
 	Vector3 m_forward = Vector3::AxisZ;	//前ベクトル。
 	CharacterController m_characterController;//キャラクターコントローラー。
 	AnimationClip animationClips[enAnimationClip_Num];		//アニメーションクリップ。	
+	SoundSource* m_attackSE = nullptr;
+	SoundSource* m_damageSE = nullptr;
 
 	float m_timer = 0.0f;
 	int m_EnemyMaxHP = 0;

@@ -17,7 +17,7 @@ Enemy::Enemy()
 
 Enemy::~Enemy()
 {
-
+	DeleteGO(m_damageSE);
 }
 
 bool Enemy::Start()
@@ -37,6 +37,9 @@ bool Enemy::Start()
 //PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 
 	m_EnemyHP = EnemyHP;
+
+	g_soundEngine->ResistWaveFileBank(6, "Assets/sound/Attack.wav");	//音の読み込み。
+	g_soundEngine->ResistWaveFileBank(7, "Assets/sound/Damage.wav");	//音の読み込み。
 	return true;
 }
 
@@ -173,6 +176,9 @@ void Enemy::EnemyAttack()
 		if (roll < 90) {
 			// プレイヤーにダメージを送るのみ。プレイヤー側で HP を管理
 			m_player->PlayerTakeDamage(1);
+			auto se = NewGO<SoundSource>(0);
+			se->Init(7);       // ← WaveFileBank の番号
+			se->Play(false);
 			m_message->AddMessage("PlayerDamage");
 			// エフェクト/サウンドをここに追加
 		}
@@ -195,7 +201,6 @@ void Enemy::EnemyUI()
 void Enemy::EnemyTakeDamage(int dmg)
 {
 	m_EnemyHP -= dmg;
-	
 
 	if (m_EnemyHP <= 0) {
 		m_EnemyHP = 0;
@@ -210,7 +215,7 @@ void Enemy::EnemyTakeDamage(int dmg)
 			m_game->SpawnBoss();
 		}
 
-		// ★ 自分を消す前に Game の m_enemy を無効化
+		//自分を消す前に Game の m_enemy を無効化
 		if (m_game)
 		{
 			m_game->OnEnemyDead(this);
