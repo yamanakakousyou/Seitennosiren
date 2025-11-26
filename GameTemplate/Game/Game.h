@@ -56,6 +56,7 @@ public:
 	GameCamera* m_gamecamera;
 	GameClear* m_gameclear;
 	Title* m_title;
+	SoundSource* m_soundSource = nullptr;
 	Vector3 m_pos;
 	TurnType m_currentTurn = TurnType::Player;
 	std::chrono::steady_clock::time_point m_enemyTurnStartTime;

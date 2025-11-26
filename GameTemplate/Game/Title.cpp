@@ -9,9 +9,21 @@ Title::Title()
 	spriteRender.Init("Assets/sprite/Title2.dds", 1920.0f, 1080.0f);
 }
 
+bool Title::Start()
+{
+	//BGM.
+	g_soundEngine->ResistWaveFileBank(0, "Assets/sound/Title.wav");
+	m_soundSource = NewGO<SoundSource>(0);
+	//ResistWaveFileBankで指定した番号。
+	m_soundSource->Init(0);
+	//BGMは曲をループさせる。
+	m_soundSource->Play(true);
+	return true;
+}
+
 Title::~Title()
 {
-
+	DeleteGO(m_soundSource);
 }
 
 void Title::Update()

@@ -59,6 +59,15 @@ bool Player::Start()
 	m_state = PlayerState::Idle;
 	m_attackTimer = 0.0f;
 	m_currentAnim = -1;
+
+	g_soundEngine->ResistWaveFileBank(6, "Assets/sound/Attack.wav");	//音の読み込み。
+	g_soundEngine->ResistWaveFileBank(7, "Assets/sound/Damage.wav");	//音の読み込み。
+
+	/*m_attackSE = NewGO<SoundSource>(0);
+	m_attackSE->Init(6);
+
+	m_damageSE = NewGO<SoundSource>(0);
+	m_damageSE->Init(7);*/
 	return true;
 }
 
@@ -68,6 +77,7 @@ Player::Player()
 
 Player::~Player()
 {
+	DeleteGO(m_attackSE);
 }
 
 void Player::Update()
@@ -237,6 +247,12 @@ void Player::PlayerMoveTurn()
 		m_attackTimer = 1.0f; // 攻撃アニメ時間（秒）
 		m_currentAnim = -1;   // アニメリセット
 		modelRender.PlayAnimation(enAnimationClip_Attack);
+
+		//m_attackSE->Play(false);
+
+		auto se = NewGO<SoundSource>(0);
+		se->Init(6);       // ← WaveFileBank の番号
+		se->Play(false);
 
 		// 攻撃処理
 		PlayerAttack();

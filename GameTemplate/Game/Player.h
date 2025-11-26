@@ -125,6 +125,10 @@ public:
     Boss* m_boss = nullptr;
     Message* m_message = nullptr;
     Pouse* m_pouse = nullptr;
+    SoundSource* m_soundSource = nullptr;
+
+    SoundSource* m_attackSE = nullptr;
+    SoundSource* m_damageSE = nullptr;
 
     int playerState = 0;//プレイヤーのステート
     int m_selectedItemIndex = 0;

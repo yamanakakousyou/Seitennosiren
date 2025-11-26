@@ -22,6 +22,7 @@ bool Sord::Start()
 	//モデルの初期化。
 	m_modelRender.Init("Assets/modelData/sord.tkm");
 	m_modelRender.SetScale(1.0f, 1.0f, 1.0f);
+	g_soundEngine->ResistWaveFileBank(5, "Assets/sound/GetItem.wav");	//音の読み込み。
 	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
 
@@ -41,6 +42,9 @@ void Sord::Update()
 	float pickupRange = 30.0f;		// 拾える範囲
 
 	if (dist < pickupRange) {
+		SoundSource* se = NewGO<SoundSource>(0);
+		se->Init(5);
+		se->Play(false);
 		m_player->AttackPower(2); // 攻撃力+2
 		DeleteGO(this);           // アイテムを消す
 	}

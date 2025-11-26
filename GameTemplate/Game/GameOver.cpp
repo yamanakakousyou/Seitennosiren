@@ -10,7 +10,7 @@ GameOver::GameOver()
 
 GameOver::~GameOver()
 {
-
+	DeleteGO(m_soundSource);
 }
 
 bool GameOver::Start()
@@ -18,6 +18,14 @@ bool GameOver::Start()
 	//ゲームオーバーの画像を読み込む
 	m_spriteRender.Init("Assets/sprite/Gameover.dds", 1920.0f, 1080.0f);
 	//m_game = FindGO<Game>("game");
+
+	//BGM.
+	g_soundEngine->ResistWaveFileBank(2, "Assets/sound/Gameover.wav");
+	m_soundSource = NewGO<SoundSource>(0);
+	//ResistWaveFileBankで指定した番号。
+	m_soundSource->Init(2);
+	//BGMは曲をループさせる。
+	m_soundSource->Play(true);
 	return true;
 }
 
