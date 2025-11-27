@@ -29,5 +29,6 @@ private:
     SpriteRender m_spriteRender; // ”wŒi
     FontRender m_fontRender;     // ƒeƒLƒXƒg
     std::string m_currentMessage;
+
     float m_sdRenderTimer = 0.0f;
 };

@@ -73,8 +73,6 @@ public:
         return V1toV2;
     }
 
-    bool HasMoved = false;
-
     enum EnAnimationClip {		//アニメーション。
         enAnimationClip_Idle,
         enAnimationClip_Walk,
@@ -99,8 +97,8 @@ public:
     void UseItem(int index);           // 指定番号のアイテムを使用
     void ToggleInventory();            // Xキーで開閉
     void Invebtory();
-   //void CloseToggleInvebtory();
     void DrawInventory(RenderContext& rc); // インベントリの描画
+    //void CloseToggleInvebtory();
 
     //回転用変数
     Quaternion rot;
@@ -113,48 +111,48 @@ public:
     FontRender      m_itemFontRender;
     SpriteRender    m_satietyRender;
 
-    AnimationClip animationClips[enAnimationClip_Num];		//アニメーションクリップ。	//アニメーションクリップ。
+    AnimationClip   animationClips[enAnimationClip_Num];		//アニメーションクリップ。	//アニメーションクリップ。
     CharacterController m_characterController;  //キャラクターコントローラー。
 
-    Vector3 moveSpeed; //移動速度。
-    Vector3 m_position = Vector3::Zero;//ポジション
-    Quaternion m_rotation;//クォータニオン。
-    Transform* m_transform;
-    Game* m_game;
-    Enemy* m_enemy = nullptr;
-    Boss* m_boss = nullptr;
-    Message* m_message = nullptr;
-    Pouse* m_pouse = nullptr;
-    SoundSource* m_soundSource = nullptr;
+    Vector3         moveSpeed; //移動速度。
+    Vector3         m_position = Vector3::Zero;//ポジション
+    Quaternion      m_rotation;//クォータニオン。
+    Transform*      m_transform;
+    Game*           m_game;
+    Enemy*          m_enemy = nullptr;
+    Boss*           m_boss = nullptr;
+    Message*        m_message = nullptr;
+    Pouse*          m_pouse = nullptr;
+    PlayerState     m_state = PlayerState::Idle;
 
-    SoundSource* m_attackSE = nullptr;
-    SoundSource* m_damageSE = nullptr;
-
-    int playerState = 0;//プレイヤーのステート
-    int m_selectedItemIndex = 0;
-    int m_currentAnim = -1; // 現在再生中のアニメ番号
+    SoundSource*    m_soundSource = nullptr;
+    SoundSource*    m_attackSE = nullptr;
+    SoundSource*    m_damageSE = nullptr;
 
     // 入力の前回状態を記録（押しっぱなし防止）
-    bool m_prevUp = false;
-    bool m_prevDown = false;
-    bool m_prevA = false;
-    bool m_prevB = false;
+    bool            m_prevUp = false;
+    bool            m_prevDown = false;
+    bool            m_prevA = false;
+    bool            m_prevB = false;
+    bool            HasMoved = false;
+    bool            m_isInventoryOpen = false;            // インベントリを開いているかどうか
 
-    int m_PlayerHP = 0;
-    int m_PlayerMaxHP = 0;
-    int m_satiety = 0;
-    int m_PlayerAttackDamage = 2;
-    int dmg = 0;
-    int m_attackPower = 1;
-    float m_attackRange = 0;
-    float m_attackCooldown = 1.0f;
-    const float kAttackCooldown = 0.5f; // 0.5 秒のクールダウン
+    int             m_PlayerHP = 0;
+    int             m_PlayerMaxHP = 0;
+    int             m_satiety = 0;
+    int             m_PlayerAttackDamage = 2;
+    int             dmg = 0;
+    int             m_attackPower = 1;
+    int             m_playerState = 0;//プレイヤーのステート
+    int             m_selectedItemIndex = 0;
+    int             m_currentAnim = -1; // 現在再生中のアニメ番号
+    int             m_inventoryCursor = 0;
 
-    bool m_isInventoryOpen = false;            // インベントリを開いているかどうか
-    int m_inventoryCursor = 0;
+    float           m_attackRange = 0;
+    float           m_attackCooldown = 1.0f;
+    const float     m_AttackCooldown = 0.5f; // 0.5 秒のクールダウン
+    float           m_attackTimer = 0.0f;
+    float           m_moveTimer = 0.0f;
+
     std::vector<InventoryItem> m_inventory;    // プレイヤーが持っているアイテム一覧
-
-    PlayerState m_state = PlayerState::Idle;
-    float m_attackTimer = 0.0f;
-    float m_moveTimer = 0.0f;
 };

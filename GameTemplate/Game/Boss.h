@@ -19,12 +19,12 @@ public:
 
     void BossTakeDamage(int dmg);
     void EnemyTurn() override;
+    void Render(RenderContext& rc)override;
+
     void SetPlayer(Player* player)override;
 
     const Vector3& GetPosition() const { return m_position; }
     void SetPosition(const Vector3& pos) { m_position = pos; m_modelRender.SetPosition(m_position); }
-
-    void Render(RenderContext& rc)override;
 
     enum EnAnimationClip {		//アニメーション。
         enAnimationClip_BossIdle,
@@ -33,8 +33,8 @@ public:
     };
 
 private:
-    int m_BossHP = 0;
 
     GameClear* m_gameclear = nullptr;
     Message* m_message;
+    int m_BossHP = 0;
 };
