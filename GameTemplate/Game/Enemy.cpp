@@ -4,7 +4,6 @@
 #include "Game.h"
 #include "Message.h"
 #include "Pouse.h"
-#include <cstdlib> // rand()用
 
 namespace {
 	const int EnemyHP = 4;
@@ -182,7 +181,7 @@ void Enemy::EnemyAttack()
 			m_message->AddMessage("PlayerDamage");
 			// エフェクト/サウンドをここに追加
 		}
-		m_attackCooldown = kAttackCooldown;
+		m_attackCooldown = m_AttackCooldown;
 	}
 }
 

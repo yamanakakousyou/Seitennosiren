@@ -84,7 +84,7 @@ void Boss::EnemyAttack()
                 m_message->AddMessage("PlayerDamage");
             }
         }
-        m_attackCooldown = kAttackCooldown;
+        m_attackCooldown = m_AttackCooldown;
     }
 }
 

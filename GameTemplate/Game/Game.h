@@ -24,6 +24,7 @@ enum class TurnType {
 	Player,
 	Enemy
 };
+
 class Game : public IGameObject
 {
 public:
