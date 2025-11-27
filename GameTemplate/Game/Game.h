@@ -42,6 +42,18 @@ public:
 	Vector3  GetEnemyPosition() const { return m_enemy->GetPosition(); }
 	Vector3 GetItemPosition() const { return m_sord->GetPosition(); }
 
+public:
+	void SetEnemyTurnStartTimeNow() {
+		m_enemyTurnStartTime = std::chrono::steady_clock::now();
+	}
+	//待機時間が経過したかを判定する
+	bool IsEnemyWaitTimeElapsed() const {
+		auto now = std::chrono::steady_clock::now();
+		float elapsed = std::chrono::duration<float>(now - m_enemyTurnStartTime).count();
+		//ターンが切り替わるまでの時間
+		return elapsed >= m_enemyWaitSeconds;
+	}
+
 	//private:
 	ModelRender m_modelRender;
 	BackGround* m_backGround;
@@ -61,18 +73,5 @@ public:
 	TurnType m_currentTurn = TurnType::Player;
 	std::chrono::steady_clock::time_point m_enemyTurnStartTime;
 	float m_enemyWaitSeconds = 1.0f; // 例: 1秒待つ
-
-
-public:
-	void SetEnemyTurnStartTimeNow() {
-		m_enemyTurnStartTime = std::chrono::steady_clock::now();
-	}
-	//待機時間が経過したかを判定する
-	bool IsEnemyWaitTimeElapsed() const {
-		auto now = std::chrono::steady_clock::now();
-		float elapsed = std::chrono::duration<float>(now - m_enemyTurnStartTime).count();
-		//ターンが切り替わるまでの時間
-		return elapsed >= m_enemyWaitSeconds;
-	}
 };
 

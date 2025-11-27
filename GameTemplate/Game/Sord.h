@@ -25,6 +25,8 @@ public:
 	ModelRender			m_modelRender;
 	Vector3 m_position = Vector3::Zero;//ポジション
 
+private:
+
 	bool			m_isGet = false;
 	bool			m_isCollected = false;	//アイテム取得済みかどうかのフラグ
 };
