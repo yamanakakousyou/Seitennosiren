@@ -23,12 +23,12 @@ public:
 
 private:
 
-	Player* m_player;
-	Enemy* m_enemy;
+	Player* m_player=nullptr;
+	Enemy* m_enemy=nullptr;
 	Boss* m_boss=nullptr;
-	Sord* m_sord;
-	Food* m_food;
-	BackGround* m_backGround;
+	Sord* m_sord=nullptr;
+	Food* m_food=nullptr;
+	BackGround* m_backGround=nullptr;
 
 	SpriteRender m_back;
 	SpriteRender m_back2;
