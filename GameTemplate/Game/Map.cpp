@@ -96,7 +96,7 @@ void Map::Render(RenderContext& rc)
     const float worldWidth = WORLD_MAX_X - WORLD_MIN_X;
     const float worldHeight = WORLD_MAX_Z - WORLD_MIN_Z;
 
-    auto ToMiniMap = [&](const Vector3& worldPos) {
+    auto ToMiniMap = [&](const Vector3 worldPos) {
         Vector3 mini;
         float nx = (worldPos.x - WORLD_MIN_X) / worldWidth;   
         float ny = (worldPos.z - WORLD_MIN_Z) / worldHeight;  
@@ -109,9 +109,12 @@ void Map::Render(RenderContext& rc)
     // 各アイコン描画
 
     // プレイヤー
-    m_playerIcon.SetPosition(ToMiniMap(m_player->GetPosition()));
-    m_playerIcon.Update();
-    m_playerIcon.Draw(rc);
+    if (auto player = FindGO<Player>("player"))
+    {
+        m_playerIcon.SetPosition(ToMiniMap(m_player->GetPosition()));
+        m_playerIcon.Update();
+        m_playerIcon.Draw(rc);
+    }
 
     // 敵
     if (auto enemy=FindGO<Enemy>("enemy")) {
