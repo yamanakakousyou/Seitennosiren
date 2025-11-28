@@ -12,8 +12,8 @@ public:
     void Render(RenderContext& rc);
 
     //スプライトレンダ―。
-    SpriteRender spriteRender;
-    Game* m_game;
-    SoundSource* m_soundSource = nullptr;
-    Describe* m_describe;
+    SpriteRender            m_spriteRender;
+    Game*                   m_game;
+    SoundSource*            m_soundSource = nullptr;
+    Describe*               m_describe;
 };

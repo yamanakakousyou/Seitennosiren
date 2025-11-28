@@ -5,8 +5,8 @@
 
 struct MessageData
 {
-    std::string text;                                   //文字をだす
-    float duration;                                     // 表示時間（秒）
+    std::string text;                                               //文字をだす
+    float duration;                                                 // 表示時間（秒）
     std::chrono::steady_clock::time_point startTime;
 };
 
@@ -26,9 +26,9 @@ public:
     void NextMessage();
 
 private:
-    SpriteRender m_spriteRender; // 背景
-    FontRender m_fontRender;     // テキスト
-    std::string m_currentMessage;
+    SpriteRender                                m_spriteRender;     // 背景
+    FontRender                                  m_fontRender;       // テキスト
+    std::string                                 m_currentMessage;
 
     float m_sdRenderTimer = 0.0f;
 };

@@ -20,16 +20,26 @@ enum class PlayerState {
     Attack
 };
 
-
-
-// インベントリ内のアイテム情報
-struct InventoryItem {
-    ItemType type;       // アイテムの種類
-    std::string name;    // 表示名（例："肉"、"おにぎり"）
-};
-
 class Player :public IGameObject
 {
+private:
+
+    //アニメーション。
+    enum EnAnimationClip
+    {
+        enAnimationClip_Idle,
+        enAnimationClip_Walk,
+        enAnimationClip_Attack,
+        enAnimationClip_Die,
+        enAnimationClip_Num,
+    };
+
+    // インベントリ内のアイテム情報
+    struct InventoryItem {
+        ItemType type;       // アイテムの種類
+        std::string name;    // 表示名（例："肉"、"おにぎり"）
+    };
+
 public:
     Player();
     ~Player();
@@ -74,16 +84,6 @@ public:
         return V1toV2;
     }
 
-    //アニメーション。
-    enum EnAnimationClip 
-    {
-        enAnimationClip_Idle,
-        enAnimationClip_Walk,
-        enAnimationClip_Attack,
-        enAnimationClip_Die,
-        enAnimationClip_Num,
-    };
-
     void SetRotation(const Quaternion& rotation)
     {
         m_rotation = rotation;
@@ -101,9 +101,9 @@ public:
     void Invebtory();                                           //インベントリ
     void DrawInventory(RenderContext& rc);                      // インベントリの描画
 
+public:
     //回転用変数
-    Quaternion rot;
-
+    Quaternion      m_rot;
     ModelRender     modelRender;
     SpriteRender    m_spriteRender;
     FontRender      m_pouseFontRender;
@@ -112,31 +112,33 @@ public:
     FontRender      m_itemFontRender;
     SpriteRender    m_satietyRender;
 
-    AnimationClip   animationClips[enAnimationClip_Num];		//アニメーションクリップ。	//アニメーションクリップ。
-    CharacterController m_characterController;                  //キャラクターコントローラー。
+    AnimationClip                                           animationClips[enAnimationClip_Num];		//アニメーションクリップ。	//アニメーションクリップ。
+    CharacterController                                     m_characterController;                      //キャラクターコントローラー。
+    PlayerState                                             m_state = PlayerState::Idle;
 
-    Vector3         moveSpeed; //移動速度。
-    Vector3         m_position = Vector3::Zero;                 //ポジション
-    Quaternion      m_rotation;                                 //クォータニオン。
-    Transform*      m_transform;
-    Game*           m_game;
-    Enemy*          m_enemy = nullptr;
-    Boss*           m_boss = nullptr;
-    Message*        m_message = nullptr;
-    Pouse*          m_pouse = nullptr;
-    PlayerState     m_state = PlayerState::Idle;
+    Vector3                                                 moveSpeed; //移動速度。
+    Vector3                                                 m_position = Vector3::Zero;                 //ポジション
+    std::vector<InventoryItem>                              m_inventory;                                // プレイヤーが持っているアイテム一覧
+    Quaternion                                              m_rotation;                                 //クォータニオン。
+    Transform*                                              m_transform;
 
-    SoundSource*    m_soundSource = nullptr;
-    SoundSource*    m_attackSE = nullptr;
-    SoundSource*    m_damageSE = nullptr;
+private:
+    Game*           m_game          =nullptr;
+    Enemy*          m_enemy         = nullptr;
+    Boss*           m_boss          = nullptr;
+    Message*        m_message       = nullptr;
+    Pouse*          m_pouse         = nullptr;
+    SoundSource*    m_soundSource   = nullptr;
+    SoundSource*    m_attackSE      = nullptr;
+    SoundSource*    m_damageSE      = nullptr;
 
     // 入力の前回状態を記録
-    bool            m_prevUp = false;
-    bool            m_prevDown = false;
-    bool            m_prevA = false;
-    bool            m_prevB = false;
-    bool            HasMoved = false;
-    bool            m_isInventoryOpen = false;                  // インベントリを開いているかどうか
+    bool            m_prevUp            = false;
+    bool            m_prevDown          = false;
+    bool            m_prevA             = false;
+    bool            m_prevB             = false;
+    bool            HasMoved            = false;
+    bool            m_isInventoryOpen   = false;                  // インベントリを開いているかどうか
 
     int             m_PlayerHP = 0;
     int             m_PlayerMaxHP = 0;
@@ -151,9 +153,7 @@ public:
 
     float           m_attackRange = 0;
     float           m_attackCooldown = 1.0f;
-    const float     m_AttackCooldown = 0.5f;                    // 0.5 秒のクールダウン
     float           m_attackTimer = 0.0f;
     float           m_moveTimer = 0.0f;
-
-    std::vector<InventoryItem> m_inventory;                     // プレイヤーが持っているアイテム一覧
+    const float     m_AttackCooldown = 0.5f;                    // 0.5 秒のクールダウン
 };

@@ -39,13 +39,6 @@ public:
 	void SpawnEnemy(const Vector3& pos);
 	void SpawnBoss();
 	void OnEnemyDead(Enemy* enemy);
-	TurnType GetCurrentTurn() const;
-	Vector3 GetPlayerPosition() const { return m_player->GetPosition(); }
-	Vector3 GetItemPosition() const { return m_sord->GetPosition(); }
-
-	//Enemy
-	std::vector<Enemy*> m_enemies;
-	const std::vector<Enemy*>& GetEnemies() const { return m_enemies; }
 
 public:
 	void SetEnemyTurnStartTimeNow() {
@@ -59,23 +52,34 @@ public:
 		return elapsed >= m_enemyWaitSeconds;
 	}
 
-	//private:
-	ModelRender m_modelRender;
-	BackGround* m_backGround;
-	Player* m_player;
-	Sord* m_sord;
-	Food* m_food;
-	Boss* m_boss;
-	Map* m_map;
-	Pouse* m_pouse;
-	Message* m_message;
-	GameCamera* m_gamecamera;
-	GameClear* m_gameclear;
-	Title* m_title;
-	SoundSource* m_soundSource = nullptr;
-	Vector3 m_pos;
-	TurnType m_currentTurn = TurnType::Player;
-	std::chrono::steady_clock::time_point m_enemyTurnStartTime;
-	float m_enemyWaitSeconds = 1.0f; // —á: 1•b‘Ò‚Â
+public:
+	ModelRender									m_modelRender;
+	Vector3										m_pos;
+	Vector3 GetPlayerPosition() const { return	m_player->GetPosition(); }
+	Vector3 GetItemPosition() const { return	m_sord->GetPosition(); }
+	TurnType									m_currentTurn = TurnType::Player;
+	TurnType GetCurrentTurn() const;
+
+	//Enemy
+	std::vector<Enemy*>							m_enemies;
+	const std::vector<Enemy*>& GetEnemies() const { return m_enemies; }
+	std::chrono::steady_clock::time_point		m_enemyTurnStartTime;
+
+private:
+	BackGround*								m_backGround;
+	Player*									m_player;
+	Sord*									m_sord;
+	Food*									m_food;
+	Boss*									m_boss;
+	Map*									m_map;
+	Pouse*									m_pouse;
+	Message*								m_message;
+	GameCamera*								m_gamecamera;
+	GameClear*								m_gameclear;
+	Title*									m_title;
+	SoundSource*							m_soundSource = nullptr;
+	
+
+	float									m_enemyWaitSeconds = 1.0f; // —á: 1•b‘Ò‚Â
 };
 
