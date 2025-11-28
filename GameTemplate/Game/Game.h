@@ -36,12 +36,16 @@ public:
 	void PlayerTurn();
 	void EnemyTurn();
 	void NextTurn();
+	void SpawnEnemy(const Vector3& pos);
 	void SpawnBoss();
 	void OnEnemyDead(Enemy* enemy);
 	TurnType GetCurrentTurn() const;
 	Vector3 GetPlayerPosition() const { return m_player->GetPosition(); }
-	Vector3  GetEnemyPosition() const { return m_enemy->GetPosition(); }
 	Vector3 GetItemPosition() const { return m_sord->GetPosition(); }
+
+	//Enemy
+	std::vector<Enemy*> m_enemies;
+	const std::vector<Enemy*>& GetEnemies() const { return m_enemies; }
 
 public:
 	void SetEnemyTurnStartTimeNow() {
@@ -59,7 +63,6 @@ public:
 	ModelRender m_modelRender;
 	BackGround* m_backGround;
 	Player* m_player;
-	Enemy* m_enemy;
 	Sord* m_sord;
 	Food* m_food;
 	Boss* m_boss;

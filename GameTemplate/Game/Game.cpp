@@ -24,8 +24,13 @@ Game::~Game()
 
 	//プレイヤーを削除する
 	DeleteGO(m_player);
+
 	//敵を削除する
-	DeleteGO(m_enemy);
+	for (auto e : m_enemies) {
+		DeleteGO(e);
+	}
+	m_enemies.clear();
+
 	//ゲームカメラを削除する
 	DeleteGO(m_gamecamera);
 	//背景を削除する
@@ -44,15 +49,12 @@ bool Game::Start()
 {
 	m_backGround = NewGO<BackGround>(0, "backGround");
 	m_player = NewGO<Player>(0, "player");
-	m_enemy = NewGO<Enemy>(0, "enemy");
 	m_sord = NewGO<Sord>(0, "item");
 	m_message = NewGO<Message>(0, "message");
 	m_map = NewGO<Map>(0, "map");
 
 	auto meat = NewGO<Food>(0, "meat");
 	auto onigiri = NewGO<Food>(0, "onigiri");
-
-	m_enemy->SetPlayer(m_player);
 
 	m_gamecamera = NewGO<GameCamera>(0, "gamecamera");
 	m_currentTurn = TurnType::Player;
@@ -64,7 +66,7 @@ bool Game::Start()
 	{
 		//ステージ1生成時の位置
 		m_player->SetPosition(Vector3(m_player->m_position));
-		m_enemy->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
+		SpawnEnemy({ 300.0f, 0.0f, 0.0f });
 		m_sord->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
 		meat->SetType(FoodType::Meat);
 		meat->SetPosition({ 100.0f, 0.0f, 0.0f });
@@ -76,7 +78,7 @@ bool Game::Start()
 	{
 		//ステージ2生成時の位置
 		m_player->SetPosition(Vector3(m_player->m_position));
-		m_enemy->SetPosition(Vector3(-300.0f, 0.0f, 0.0f));
+		SpawnEnemy({ 300.0f, 0.0f, 0.0f });
 		m_sord->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
 		meat->SetType(FoodType::Meat);
 		meat->SetPosition({ -100.0f, 0.0f, 0.0f });
@@ -88,7 +90,9 @@ bool Game::Start()
 	{
 		//ステージ3生成時の位置
 		m_player->SetPosition(Vector3(m_player->m_position));
-		m_enemy->SetPosition(Vector3(200.0f, 0.0f, 0.0f));
+		SpawnEnemy({ 300.0f, 0.0f, 0.0f });
+		SpawnEnemy({ -60.0f, 0.0f, 50.0f });
+		SpawnEnemy({ -200.0f, 0.0f, -100.0f });
 		m_sord->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
 		meat->SetType(FoodType::Meat);
 		meat->SetPosition({ 300.0f, 0.0f, 0.0f });
@@ -109,9 +113,29 @@ bool Game::Start()
 void Game::Update()
 {
 
-	// ポーズ中なら何もしない
-	if (FindGO<Pouse>("pouse")) {
-		return;    // Game 自体の処理は止まる
+	if (FindGO<Pouse>("pouse")) return;
+
+	if (m_currentTurn == TurnType::Enemy)
+	{
+		bool allMoved = true;
+
+		for (auto enemy : m_enemies)
+		{
+			if (!enemy->HasMoved)
+			{
+				enemy->EnemyTurn();
+			}
+
+			if (!enemy->HasMoved)
+			{
+				allMoved = false;
+			}
+		}
+
+		if (allMoved)
+		{
+			NextTurn(); //全員動いたら次ターンへ
+		}
 	}
 }
 
@@ -128,28 +152,49 @@ void Game::NextTurn() {
 	if (m_currentTurn == TurnType::Player) {
 		m_currentTurn = TurnType::Enemy;
 		SetEnemyTurnStartTimeNow(); // 敵ターン開始時刻を記録
+
+		for (auto e : m_enemies) {
+			e->HasMoved = false;
+		}
 	}
 	else {
 		m_currentTurn = TurnType::Player;
 	}
 }
 
+void Game::SpawnEnemy(const Vector3& pos)
+{
+	Enemy* e = NewGO<Enemy>(0, "enemy");
+	e->SetPlayer(m_player);
+	e->SetPosition(pos);
+	m_enemies.push_back(e);
+}
+
 void Game::SpawnBoss()
 {
-	if (m_boss == nullptr) //雑魚が死んだら
-	{
-		m_boss = NewGO<Boss>(0, "boss");
-		m_boss->SetPlayer(m_player);
-		m_boss->SetPosition(Vector3(400.0f, 0.0f, 0.0f));
-		m_player->SetBoss(m_boss);
-	}
+	//if (m_boss == nullptr) //雑魚が死んだら
+	//{
+	//	m_boss = NewGO<Boss>(0, "boss");
+	//	m_boss->SetPlayer(m_player);
+	//	m_boss->SetPosition(Vector3(400.0f, 0.0f, 0.0f));
+	//	m_player->SetBoss(m_boss);
+	//}
+
+	Boss* b = NewGO<Boss>(0, "boss");
+	b->SetPlayer(m_player);
+	m_enemies.push_back(b);
 }
 
 void Game::OnEnemyDead(Enemy* enemy)
 {
-	if (m_enemy == enemy)
-	{
-		m_enemy = nullptr;
+	m_enemies.erase(
+		std::remove(m_enemies.begin(), m_enemies.end(), enemy),
+		m_enemies.end()
+	);
+
+	// 雑魚が全滅したらボスを出す
+	if (m_enemies.empty() && m_boss == nullptr) {
+		SpawnBoss();
 	}
 }
 
