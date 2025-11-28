@@ -7,7 +7,7 @@
 #include "Pouse.h"
 
 namespace {
-    const int BossHP = 5; // ボスの最大HP（雑魚敵より多め）
+    const int BossHP = 9; // ボスの最大HP（雑魚敵より多め）
 }
 
 Boss::Boss()
@@ -32,7 +32,6 @@ bool Boss::Start()
     m_characterController.Init(25.0f, 75.0f, m_position); // ← ここで当たり判定の大きさを指定
 
     m_modelRender.SetRotation(m_rotation);
-    //m_modelRender.SetScale(0.45f, 0.45f, 0.45f);
     m_game = FindGO<Game>("game");
     m_player = FindGO<Player>("player");
     m_gameclear = FindGO<GameClear>("gameclear");
@@ -49,12 +48,15 @@ bool Boss::Start()
 
 void Boss::Update()
 {
-    if (FindGO<Pouse>("pouse")) {
-        return;
+    if (FindGO<Pouse>("pouse")) return;
+
+    m_modelRender.Update();
+
+    // クールダウン進行
+    if (m_attackCooldown > 0.0f) {
+        m_attackCooldown -= dt;
+        if (m_attackCooldown < 0.0f) m_attackCooldown = 0.0f;
     }
-    // Enemyの通常処理
-    Enemy::Update();
-    Enemy::EnemyTurn();
 
     BossTakeDamage(dmg);
 }
@@ -79,7 +81,7 @@ void Boss::EnemyAttack()
             // 攻撃が命中したときだけメッセージを表示
             if (m_message) {
                 auto se = NewGO<SoundSource>(0);
-                se->Init(7);       // ← WaveFileBank の番号
+                se->Init(7);       
                 se->Play(false);
                 m_message->AddMessage("PlayerDamage");
             }
@@ -90,12 +92,14 @@ void Boss::EnemyAttack()
 
 void Boss::EnemyTakeDamage(int dmg)
 {
-
+    // ボス用のダメージ処理に渡す
+    BossTakeDamage(dmg);
 }
 
 void Boss::BossTakeDamage(int dmg)
 {
     m_BossHP -= dmg;
+
     if (m_BossHP <= 0) {
         m_BossHP = 0;
 
@@ -114,39 +118,34 @@ void Boss::EnemyTurn()
 
     static TurnType lastTurn = TurnType::Enemy;
     if (m_game->GetCurrentTurn() != lastTurn) {
-        HasMoved = false;
+        HasMoved = false; // ターン切替時にリセット
     }
     lastTurn = m_game->GetCurrentTurn();
 
-    if (m_game->GetCurrentTurn() == TurnType::Enemy && !HasMoved) {
-        if (!m_game->IsEnemyWaitTimeElapsed()) {
-            return;
-        }
+    if (m_game->GetCurrentTurn() != TurnType::Enemy || HasMoved) return;
+    if (!m_game->IsEnemyWaitTimeElapsed()) return;
 
-        Vector3 toPlayer = m_game->GetPlayerPosition() - m_position;
-        float dist = toPlayer.Length();
+    Vector3 toPlayer = m_game->GetPlayerPosition() - m_position;
+    float dist = toPlayer.Length();
+    float attackRange = 100.0f;
 
-        float attackRange = 70.0f;
+    if (dist <= attackRange && m_attackCooldown <= 0.0f) {
+        // 攻撃
+        float angle = atan2f(toPlayer.x, toPlayer.z);
+        Quaternion rot; rot.SetRotationY(angle);
+        m_modelRender.SetRotation(rot);
 
-        //攻撃判定
-        if (dist < attackRange) {
-            float angle = atan2f(toPlayer.x, toPlayer.z);
-            Quaternion rot;
-            rot.SetRotationY(angle);
-            m_modelRender.SetRotation(rot);
+        m_modelRender.PlayAnimation(enAnimationClip_BossAttack);
+        EnemyAttack();
 
-            //ボス専用攻撃アニメーション
-            m_modelRender.PlayAnimation(enAnimationClip_BossAttack);
-
-            EnemyAttack(); // 攻撃処理はEnemyのをそのまま使用
-            HasMoved = true;
-            m_game->NextTurn();
-            return;
-        }
-
-        //それ以外はEnemyの通常行動をそのまま使用
-        Enemy::EnemyTurn();
+        HasMoved = true;
+        m_attackCooldown = m_AttackCooldown; // クールダウンを設定
+        m_game->NextTurn(); // 攻撃後にターン終了
+        return;
     }
+
+    // 攻撃範囲外は移動などを Enemy::EnemyTurn() に任せる
+    Enemy::EnemyTurn();
 }
 
 void Boss::Render(RenderContext& rc)

@@ -9,6 +9,13 @@ class Pouse;
 
 class Boss : public Enemy
 {
+private:
+    enum EnAnimationClip {		//アニメーション。
+        enAnimationClip_BossIdle,
+        enAnimationClip_BossAttack,
+        enAnimationClip_Num,
+    };
+
 public:
     Boss();
     ~Boss();
@@ -26,12 +33,6 @@ public:
 
     const Vector3& GetPosition() const { return m_position; }
     void SetPosition(const Vector3& pos) { m_position = pos; m_modelRender.SetPosition(m_position); }
-
-    enum EnAnimationClip {		//アニメーション。
-        enAnimationClip_BossIdle,
-        enAnimationClip_BossAttack,
-        enAnimationClip_Num,
-    };
 
 private:
 

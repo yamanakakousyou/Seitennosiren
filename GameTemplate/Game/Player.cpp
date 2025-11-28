@@ -9,8 +9,8 @@
 #include "Pouse.h"
 
 namespace {
-	const int PLAYERHP = 10;
-	const int PLAYERMAXHP = 10;
+	const int PLAYERHP = 20;
+	const int PLAYERMAXHP = 20;
 	const int SATIETY = 100;
 }
 
@@ -27,7 +27,7 @@ bool Player::Start()
 	modelRender.Init("Assets/modelData/Player.tkm", animationClips, enAnimationClip_Num, enModelUpAxisZ);
 
 	//キャラコンを初期化する
-	//m_position = Vector3(0.0f, 0.0f, 0.0f); // 例
+	//m_position = Vector3(0.0f, 0.0f, 0.0f);
 
 	m_characterController.Init(25.0f, 75.0f, m_position);
 
@@ -35,7 +35,6 @@ bool Player::Start()
 
 	m_rotation.SetRotationDegY(0);
 	modelRender.SetRotation(m_rotation);
-	//modelRender.SetPosition(m_position);
 	m_game = FindGO<Game>("game");
 	m_enemy = FindGO<Enemy>("enemy");
 	m_boss = FindGO<Boss>("boss");
@@ -62,12 +61,6 @@ bool Player::Start()
 
 	g_soundEngine->ResistWaveFileBank(6, "Assets/sound/Attack.wav");	//音の読み込み。
 	g_soundEngine->ResistWaveFileBank(7, "Assets/sound/Damage.wav");	//音の読み込み。
-
-	/*m_attackSE = NewGO<SoundSource>(0);
-	m_attackSE->Init(6);
-
-	m_damageSE = NewGO<SoundSource>(0);
-	m_damageSE->Init(7);*/
 	return true;
 }
 
@@ -116,7 +109,6 @@ void Player::Update()
 	m_spriteRender.Update();
 	m_satietyRender.Update();
 	PlayerUI();
-	//PlayerAttack();
 	PlayerTakeDamage(dmg);
 	Invebtory();
 	
@@ -273,14 +265,14 @@ void Player::PlayerUI()
 {
 	// HP表示用のバッファを用意
 	wchar_t hpText[32];
-	swprintf_s(hpText, sizeof(hpText) / sizeof(wchar_t), L"HP%d/10", m_PlayerHP);
+	swprintf_s(hpText, sizeof(hpText) / sizeof(wchar_t), L"HP%d/20", m_PlayerHP);
 
 	m_fontRender.SetText(hpText); // ここはSetText等、実際のテキスト設定関数に合わせてください
 	m_fontRender.SetPosition({ -600.0f, 530.0f, 0.0f });
 	m_fontRender.SetScale(1.5);
 	m_fontRender.SetColor(g_vec4Black);
 
-	float hpRate = (float)m_PlayerHP / 10.0f; // 最大HPを10として割合計算
+	float hpRate = (float)m_PlayerHP / 20.0f; // 最大HPを20として割合計算
 	m_spriteRender.SetScale({ 0.5f * hpRate, 0.5f, 0.5f });
 
 
@@ -308,14 +300,14 @@ void Player::PlayerAttack()
 	m_rotation.Apply(forward); // 回転を適用して「今向いてる方向」にする
 	forward.Normalize();
 
-	// 敵への攻撃判定
-	if (m_enemy)
+	for (Enemy* enemy : m_game->GetEnemies())  // ← ここ重要
 	{
-		Vector3 toEnemy = m_enemy->GetPosition() - m_position;
+		if (!enemy) continue;
+
+		Vector3 toEnemy = enemy->GetPosition() - m_position;
 		float dist = toEnemy.Length();
 		toEnemy.Normalize();
 
-		// 射程内か判別
 		if (dist <= attackRange)
 		{
 			float dot = forward.Dot(toEnemy);
@@ -326,9 +318,8 @@ void Player::PlayerAttack()
 				int roll = rand() % 100;
 				if (roll < 90)
 				{
-					m_enemy->EnemyTakeDamage(m_attackPower);
+					enemy->EnemyTakeDamage(m_attackPower);
 					m_message->AddMessage("EnemyDamage");
-					// ヒットエフェクト
 				}
 			}
 		}
@@ -353,7 +344,6 @@ void Player::PlayerAttack()
 				{
 					m_boss->BossTakeDamage(m_attackPower);
 					m_message->AddMessage("BossDamage");
-					// ヒットエフェクト
 				}
 			}
 		}
@@ -406,12 +396,12 @@ void Player::Invebtory()
 	bool kbZ = (GetAsyncKeyState('Z') & 0x8000) != 0;
 	bool kbC = (GetAsyncKeyState('C') & 0x8000) != 0;
 
-	// 追加：十字キー入力
+	//十字キー入力
 	bool padUp = (g_pad[0] && g_pad[0]->IsTrigger(enButtonUp));
 	bool padDown = (g_pad[0] && g_pad[0]->IsTrigger(enButtonDown));
 	bool padA = (g_pad[0] && g_pad[0]->IsTrigger(enButtonA));
 
-	// キーボード版 IsTrigger
+	// キーボード版
 	bool isTriggerX = kbX && !prevX;
 
 	// --- インベントリ開閉 ---
@@ -464,11 +454,13 @@ void Player::AddItem(ItemType type)
 {
 	InventoryItem item;
 
+	//肉
 	if (type == ItemType::Meat)
 	{
 		item.type = ItemType::Meat;
 		item.name = "Meat";
 	}
+	//おにぎり
 	else if(type==ItemType::Onigiri)
 	{
 		item.type = ItemType::Onigiri;

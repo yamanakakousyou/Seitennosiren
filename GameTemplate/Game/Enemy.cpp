@@ -108,7 +108,7 @@ void Enemy::EnemyTurn()
 			m_modelRender.PlayAnimation(enAnimationClip_Attack);
 			EnemyAttack();
 			HasMoved = true;
-			m_game->NextTurn();
+			//m_game->NextTurn();
 			return;
 		}
 
@@ -151,7 +151,7 @@ void Enemy::EnemyTurn()
 		m_modelRender.PlayAnimation(enAnimationClip_Idle);
 
 		HasMoved = true;
-		m_game->NextTurn();
+		//m_game->NextTurn();
 	}
 
 	// プレイヤーとの接触判定
@@ -203,18 +203,8 @@ void Enemy::EnemyTakeDamage(int dmg)
 
 	if (m_EnemyHP <= 0) {
 		m_EnemyHP = 0;
-		//m_modelRender.PlayAnimation(enAnimationClip_Die);
 
-		//NewGO<GameOver>(0, "gameover");
-
-		//DeleteGO(m_game);
-
-		if (m_game)
-		{
-			m_game->SpawnBoss();
-		}
-
-		//自分を消す前に Game の m_enemy を無効化
+		// 自分を消す前に Game の m_enemy を無効化
 		if (m_game)
 		{
 			m_game->OnEnemyDead(this);
@@ -222,7 +212,6 @@ void Enemy::EnemyTakeDamage(int dmg)
 
 		DeleteGO(this); // 実際の削除は次フレーム
 	}
-	return;
 }
 
 
