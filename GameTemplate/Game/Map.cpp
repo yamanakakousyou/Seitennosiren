@@ -121,16 +121,29 @@ void Map::Render(RenderContext& rc)
     // プレイヤー
     if (auto player = FindGO<Player>("player"))
     {
-        m_playerIcon.SetPosition(ToMiniMap(m_player->GetPosition()));
+        m_playerIcon.SetPosition(ToMiniMap(player->GetPosition()));
         m_playerIcon.Update();
         m_playerIcon.Draw(rc);
     }
 
     // 敵
-    if (auto enemy=FindGO<Enemy>("enemy")) {
-        m_enemyIcon.SetPosition(ToMiniMap(enemy->GetPosition()));
-        m_enemyIcon.Update();
-        m_enemyIcon.Draw(rc);
+    auto enemies = FindGOs<Enemy>("enemy");
+
+    // アイコン数を敵数に合わせる
+    if (m_enemyIcons.size() < enemies.size()) {
+        for (size_t i = m_enemyIcons.size(); i < enemies.size(); ++i) {
+            auto icon = new SpriteRender();
+            icon->Init("Assets/sprite/enemy_icon.dds", 16.0f, 16.0f);
+            icon->SetPivot(Vector2(0.5f, 0.5f));
+            m_enemyIcons.push_back(icon);
+        }
+    }
+
+    // 更新＆描画
+    for (size_t i = 0; i < enemies.size(); ++i) {
+        m_enemyIcons[i]->SetPosition(ToMiniMap(enemies[i]->GetPosition()));
+        m_enemyIcons[i]->Update();
+        m_enemyIcons[i]->Draw(rc);
     }
 
     //ボス

@@ -51,12 +51,12 @@ bool Game::Start()
 	m_player = NewGO<Player>(0, "player");
 	m_sord = NewGO<Sord>(0, "item");
 	m_message = NewGO<Message>(0, "message");
-	m_map = NewGO<Map>(0, "map");
 
 	auto meat = NewGO<Food>(0, "meat");
 	auto onigiri = NewGO<Food>(0, "onigiri");
 
 	m_gamecamera = NewGO<GameCamera>(0, "gamecamera");
+	m_map = NewGO<Map>(0, "map");
 	m_currentTurn = TurnType::Player;
 
 	//ステージIDで判別する
