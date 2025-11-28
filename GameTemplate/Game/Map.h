@@ -32,6 +32,7 @@ private:
 
 	SpriteRender m_back;
 	SpriteRender m_back2;
+	SpriteRender m_back3;
 	SpriteRender m_playerIcon;
 	SpriteRender m_enemyIcon;
 	SpriteRender m_bossIcon;

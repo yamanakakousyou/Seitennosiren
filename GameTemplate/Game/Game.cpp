@@ -93,7 +93,7 @@ bool Game::Start()
 		meat->SetType(FoodType::Meat);
 		meat->SetPosition({ 300.0f, 0.0f, 0.0f });
 		onigiri->SetType(FoodType::Onigiri);
-		onigiri->SetPosition({ 450.0f, 0.0f, 0.0f });
+		onigiri->SetPosition({ 200.0f, 0.0f, 0.0f });
 	}
 
 	g_soundEngine->ResistWaveFileBank(1, "Assets/sound/BGM.wav");
