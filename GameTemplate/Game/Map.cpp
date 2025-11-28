@@ -27,6 +27,7 @@ bool Map::Start()
     m_onigiriIcon.Init("Assets/sprite/onigiri_icon.dds", 16.0f, 16.0f);
     m_back.Init("Assets/sprite/minimap1.1.dds", MAP_SIZE, MAP_SIZE);
     m_back2.Init("Assets/sprite/minimap2.dds", MAP_SIZE, MAP_SIZE);
+    m_back3.Init("Assets/sprite/minimap3.dds", MAP_SIZE, MAP_SIZE);
 
     // アイコンは中心ピボット（真ん中に置く前提）
     m_playerIcon.SetPivot(Vector2(0.5f, 0.5f));
@@ -42,6 +43,7 @@ bool Map::Start()
     // 今は左上基準で扱う（既存処理に合わせる）
     m_back.SetPivot(Vector2(-0.25f, 0.3f));
     m_back2.SetPivot(Vector2(-0.1f, 0.0f));
+    m_back3.SetPivot(Vector2(-0.1f, 0.0f));
 
     m_player = FindGO<Player>("player");
    
@@ -56,6 +58,7 @@ void Map::Update()
     }
     m_back.Update();
     m_back2.Update();
+    m_back3.Update();
 }
 
 void Map::Render(RenderContext& rc)
@@ -76,7 +79,14 @@ void Map::Render(RenderContext& rc)
     // 背景選択
     auto bg = FindGO<BackGround>("backGround");
     int stageID = bg ? bg->GetStageID() : 0;
-    SpriteRender* currentBack = (stageID == 0) ? &m_back : &m_back2;
+    SpriteRender* currentBack;
+
+    if (stageID == 0)
+        currentBack = &m_back;
+    else if (stageID == 1)
+        currentBack = &m_back2;
+    else
+        currentBack = &m_back3;
 
     // 背景は左上固定
     currentBack->SetPosition(mapPos);
