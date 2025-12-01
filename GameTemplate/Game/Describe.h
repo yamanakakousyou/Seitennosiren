@@ -16,8 +16,7 @@ public:
 
 	SpriteRender	m_spriteRender;
 
-	Game* m_game = nullptr;
-	Rule* m_rule = nullptr;
-
+	Game*			m_game = nullptr;
+	Rule*			m_rule = nullptr;
 };
 

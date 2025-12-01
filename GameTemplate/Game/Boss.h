@@ -10,7 +10,8 @@ class Pouse;
 class Boss : public Enemy
 {
 private:
-    enum EnAnimationClip {		//アニメーション。
+    enum EnAnimationClip 
+    {		//アニメーション。
         enAnimationClip_BossIdle,
         enAnimationClip_BossAttack,
         enAnimationClip_Num,

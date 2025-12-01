@@ -5,7 +5,8 @@ class Game;
 class Message;
 class Pouse;
 
-enum EnAnimationClip {		//アニメーション。
+enum EnAnimationClip 
+{	//アニメーション。
 	enAnimationClip_Idle,
 	enAnimationClip_Attack,
 	enAnimationClip_Num,
@@ -43,7 +44,8 @@ public:
 
 	void SetPosition(const Vector3& pos) { m_position = pos; m_modelRender.SetPosition(m_position); }
 
-	Vector3 RangeCalcV1toV2(const Vector3& v1, const Vector3& v2) {
+	Vector3 RangeCalcV1toV2(const Vector3& v1, const Vector3& v2) 
+	{
 		// エネミーからプレイヤーに向かって伸びるベクトルを計算する。
 		Vector3 V1toV2 = v1 - v2;
 		return V1toV2;
