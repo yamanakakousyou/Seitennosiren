@@ -25,9 +25,9 @@ public:
 
 private:
 
-	SpriteRender m_spriteRender;
+	SpriteRender			m_spriteRender;
 
-	Game* m_game=nullptr;
-	Title* m_title=nullptr;
+	Game*					m_game=nullptr;
+	Title*					m_title=nullptr;
 };
 

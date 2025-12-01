@@ -3,14 +3,14 @@
 #include <vector>
 #include <chrono>
 
+class Pouse;
+
 struct MessageData
 {
     std::string text;                                               //文字をだす
     float duration;                                                 // 表示時間（秒）
     std::chrono::steady_clock::time_point startTime;
 };
-
-class Pouse;
 
 class Message : public IGameObject
 {
@@ -30,5 +30,5 @@ private:
     FontRender                                  m_fontRender;       // テキスト
     std::string                                 m_currentMessage;
 
-    float m_sdRenderTimer = 0.0f;
+    float                                       m_sdRenderTimer = 0.0f;
 };

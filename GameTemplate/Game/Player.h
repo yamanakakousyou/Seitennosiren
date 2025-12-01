@@ -14,7 +14,8 @@ enum class ItemType
     Onigiri
 };
 
-enum class PlayerState {
+enum class PlayerState 
+{
     Idle,
     Walk,
     Attack
@@ -35,7 +36,8 @@ private:
     };
 
     // インベントリ内のアイテム情報
-    struct InventoryItem {
+    struct InventoryItem 
+    {
         ItemType type;       // アイテムの種類
         std::string name;    // 表示名（例："肉"、"おにぎり"）
     };

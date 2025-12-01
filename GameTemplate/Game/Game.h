@@ -20,7 +20,8 @@ class Map;
 class Title;
 class Pouse;
 
-enum class TurnType {
+enum class TurnType 
+{
 	Player,
 	Enemy
 };
@@ -41,11 +42,13 @@ public:
 	void OnEnemyDead(Enemy* enemy);
 
 public:
-	void SetEnemyTurnStartTimeNow() {
+	void SetEnemyTurnStartTimeNow() 
+	{
 		m_enemyTurnStartTime = std::chrono::steady_clock::now();
 	}
 	//待機時間が経過したかを判定する
-	bool IsEnemyWaitTimeElapsed() const {
+	bool IsEnemyWaitTimeElapsed() const 
+	{
 		auto now = std::chrono::steady_clock::now();
 		float elapsed = std::chrono::duration<float>(now - m_enemyTurnStartTime).count();
 		//ターンが切り替わるまでの時間

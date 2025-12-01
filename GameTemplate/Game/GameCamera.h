@@ -11,9 +11,9 @@ public:
 	void Update();
 
 	//注視点から視点に向かうベクトル。
-	Vector3 toCameraPos;
+	Vector3				toCameraPos;
 	//プレイヤー
-	Player* player;
+	Player*				m_player;
 	//ステート
-	int state = 0;
+	int					m_state = 0;
 };

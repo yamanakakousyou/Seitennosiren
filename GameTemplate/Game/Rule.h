@@ -16,6 +16,6 @@ public:
 
 	SpriteRender	m_spriteRender;
 
-	Game* m_game = nullptr;
+	Game*			m_game = nullptr;
 };
 

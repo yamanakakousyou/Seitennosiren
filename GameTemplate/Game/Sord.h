@@ -20,10 +20,10 @@ public:
 	void SetPosition(const Vector3& pos) { m_position = pos; m_modelRender.SetPosition(m_position); }
 
 
-	Player* m_player = nullptr;
-	Game* m_game = nullptr;
-	ModelRender			m_modelRender;
-	Vector3 m_position = Vector3::Zero;//ポジション
+	Player*			m_player = nullptr;
+	Game*			m_game = nullptr;
+	ModelRender		m_modelRender;
+	Vector3			m_position = Vector3::Zero;//ポジション
 
 private:
 
