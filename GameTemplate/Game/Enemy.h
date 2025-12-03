@@ -5,15 +5,17 @@ class Game;
 class Message;
 class Pouse;
 
-enum EnAnimationClip 
-{	//アニメーション。
-	enAnimationClip_Idle,
-	enAnimationClip_Attack,
-	enAnimationClip_Num,
-};
-
 class Enemy :public IGameObject
 {
+
+private:
+	enum EnAnimationClip
+	{	//アニメーション。
+		enAnimationClip_Idle,
+		enAnimationClip_Attack,
+		enAnimationClip_Num,
+	};
+
 public:
 	Enemy();
 	~Enemy();
@@ -51,34 +53,35 @@ public:
 		return V1toV2;
 	}
 
-	//アニメーション
-	AnimationClip animationClips[enAnimationClip_Num];		//アニメーションクリップ。
-
-	//メンバ変数	
+public:
 	Quaternion				m_rotation;
-	Player*					m_player = nullptr;
-	Enemy*					m_enemy = nullptr;
-	Game*					m_game ;
-	Message*				m_message=nullptr;
 	CharacterController		m_characterController;//キャラクターコントローラー。	
+
 	ModelRender				m_modelRender;
 	FontRender				m_fontRender;
 	SpriteRender			m_EnemyspriteRender;
-	SoundSource*			m_attackSE = nullptr;
-	SoundSource*			m_damageSE = nullptr;
 
-	//Vector
+	//アニメーション
+	AnimationClip animationClips[enAnimationClip_Num];		//アニメーションクリップ。
+
 	Vector3					m_position = { 0.0f,0.0f,0.0f };		//ポジション
 	Vector3					m_moveSpeed;				//移動速度。
 	Vector3					moveDir;
 	Vector3					m_forward = Vector3::AxisZ;	//前ベクトル。
+
+	//メンバ変数	
+	Player*					m_player = nullptr;
+	Enemy*					m_enemy = nullptr;
+	Game*					m_game ;
+	Message*				m_message=nullptr;
+	SoundSource*			m_attackSE = nullptr;
+	SoundSource*			m_damageSE = nullptr;
 
 	bool					HasMoved = false;
 	bool					HasCooldown = false;
 
 	int						m_EnemyMaxHP = 0;
 	int						m_EnemyHP = 0;
-	//int					m_EnemyAttackDamage = 2;
 	int						dmg = 0; // dmgを定義。必要に応じて値を設定
 
 	float					dt = 0;

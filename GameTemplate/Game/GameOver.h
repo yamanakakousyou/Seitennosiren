@@ -11,10 +11,10 @@ public:
 	void Update();
 	//描画処理
 	void Render(RenderContext& rc);
-
-private:
+public:
 	SpriteRender	m_spriteRender;		//スプライトレンダー。
 
-	Game* m_game = nullptr;
-	SoundSource* m_soundSource = nullptr;
+private:
+	Game*			m_game = nullptr;
+	SoundSource*	m_soundSource = nullptr;
 };

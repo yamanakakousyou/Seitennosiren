@@ -14,8 +14,10 @@ public:
 
 	void Render(RenderContext& rc);
 
+public:
 	SpriteRender	m_spriteRender;
 
+private:
 	Game*			m_game = nullptr;
 	Rule*			m_rule = nullptr;
 };
