@@ -146,18 +146,23 @@ void Game::Render(RenderContext& rc)
 
 void Game::PlayerTurn()
 {
+
 }
 
 void Game::NextTurn() {
-	if (m_currentTurn == TurnType::Player) {
+	if (m_currentTurn == TurnType::Player) 
+	{
 		m_currentTurn = TurnType::Enemy;
 		SetEnemyTurnStartTimeNow(); // 敵ターン開始時刻を記録
 
-		for (auto e : m_enemies) {
+		for (auto e : m_enemies) 
+		{
 			e->HasMoved = false;
 		}
 	}
-	else {
+
+	else 
+	{
 		m_currentTurn = TurnType::Player;
 	}
 }
@@ -172,14 +177,6 @@ void Game::SpawnEnemy(const Vector3& pos)
 
 void Game::SpawnBoss()
 {
-	//if (m_boss == nullptr) //雑魚が死んだら
-	//{
-	//	m_boss = NewGO<Boss>(0, "boss");
-	//	m_boss->SetPlayer(m_player);
-	//	m_boss->SetPosition(Vector3(400.0f, 0.0f, 0.0f));
-	//	m_player->SetBoss(m_boss);
-	//}
-
 	Boss* b = NewGO<Boss>(0, "boss");
 	b->SetPlayer(m_player);
 	m_enemies.push_back(b);
@@ -187,13 +184,15 @@ void Game::SpawnBoss()
 
 void Game::OnEnemyDead(Enemy* enemy)
 {
-	m_enemies.erase(
+	m_enemies.erase
+	(
 		std::remove(m_enemies.begin(), m_enemies.end(), enemy),
 		m_enemies.end()
 	);
 
 	// 雑魚が全滅したらボスを出す
-	if (m_enemies.empty() && m_boss == nullptr) {
+	if (m_enemies.empty() && m_boss == nullptr) 
+	{
 		SpawnBoss();
 	}
 }

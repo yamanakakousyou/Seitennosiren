@@ -19,7 +19,6 @@ GameClear::~GameClear()
 bool GameClear::Start()
 {
 	m_spriteRender.Init("Assets/sprite/GameClear.dds", 1920.0f, 1080.0f);
-	//m_game = FindGO<Game>("game");
 
 	//BGM.
 	g_soundEngine->ResistWaveFileBank(3, "Assets/sound/Gameclear .wav");

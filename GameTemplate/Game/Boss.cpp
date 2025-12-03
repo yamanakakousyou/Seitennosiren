@@ -6,7 +6,8 @@
 #include "Message.h"
 #include "Pouse.h"
 
-namespace {
+namespace 
+{
     const int BossHP = 9; // ボスの最大HP（雑魚敵より多め）
 }
 
@@ -53,7 +54,8 @@ void Boss::Update()
     m_modelRender.Update();
 
     // クールダウン進行
-    if (m_attackCooldown > 0.0f) {
+    if (m_attackCooldown > 0.0f) 
+    {
         m_attackCooldown -= dt;
         if (m_attackCooldown < 0.0f) m_attackCooldown = 0.0f;
     }
@@ -74,9 +76,13 @@ void Boss::EnemyAttack()
     float dist = toPlayer.Length();
 
     float attackRange = 100.0f; // 通常より広い射程
-    if (dist <= attackRange) {
+    if (dist <= attackRange) 
+    {
         int roll = rand() % 100;
-        if (roll < 80) { // 命中率
+
+        if (roll < 80) 
+        { 
+            // 命中率
             m_player->PlayerTakeDamage(2); // 通常敵より強いダメージ
             // 攻撃が命中したときだけメッセージを表示
             if (m_message) {
@@ -100,9 +106,9 @@ void Boss::BossTakeDamage(int dmg)
 {
     m_BossHP -= dmg;
 
-    if (m_BossHP <= 0) {
+    if (m_BossHP <= 0) 
+    {
         m_BossHP = 0;
-
 
         //ゲームクリアを表示する
         NewGO<GameClear>(0,"gameclear");
@@ -117,9 +123,11 @@ void Boss::EnemyTurn()
     if (!m_game) return;
 
     static TurnType lastTurn = TurnType::Enemy;
-    if (m_game->GetCurrentTurn() != lastTurn) {
+    if (m_game->GetCurrentTurn() != lastTurn) 
+    {
         HasMoved = false; // ターン切替時にリセット
     }
+
     lastTurn = m_game->GetCurrentTurn();
 
     if (m_game->GetCurrentTurn() != TurnType::Enemy || HasMoved) return;
@@ -129,7 +137,8 @@ void Boss::EnemyTurn()
     float dist = toPlayer.Length();
     float attackRange = 100.0f;
 
-    if (dist <= attackRange && m_attackCooldown <= 0.0f) {
+    if (dist <= attackRange && m_attackCooldown <= 0.0f) 
+    {
         // 攻撃
         float angle = atan2f(toPlayer.x, toPlayer.z);
         Quaternion rot; rot.SetRotationY(angle);

@@ -16,10 +16,12 @@ Food::~Food()
 bool Food::Start()
 {
 	//ƒ‚ƒfƒ‹‚Ì‰Šú‰»B
-	if (m_type == FoodType::Meat) {
+	if (m_type == FoodType::Meat) 
+	{
 		m_modelRender.Init("Assets/modelData/Steak_Cooked.tkm");
 	}
-	else if (m_type == FoodType::Onigiri) {
+	else if (m_type == FoodType::Onigiri) 
+	{
 		m_modelRender.Init("Assets/modelData/Onigiri.tkm");
 	}
 	m_modelRender.SetScale(7.0f, 7.0f, 7.0f);
@@ -34,7 +36,8 @@ bool Food::Start()
 
 void Food::Update()
 {
-	if (FindGO<Pouse>("pouse")) {
+	if (FindGO<Pouse>("pouse")) 
+	{
 		return;
 	}
 
@@ -45,8 +48,10 @@ void Food::Update()
 
 	float pickupRange = 30.0f;						// E‚¦‚é”ÍˆÍ
 
-	if (dist < pickupRange) {
-		if (m_type == FoodType::Meat) {
+	if (dist < pickupRange) 
+	{
+		if (m_type == FoodType::Meat) 
+		{
 			m_player->AddItem(ItemType::Meat);		// HP‰ñ•œ
 			SoundSource* se = NewGO<SoundSource>(0);
 			se->Init(5);
@@ -54,7 +59,9 @@ void Food::Update()
 			m_message->AddMessage("MeatGet");
 			DeleteGO(this); // E‚Á‚½‚çÁ‚¦‚é
 		}
-		else if (m_type == FoodType::Onigiri) {
+
+		else if (m_type == FoodType::Onigiri) 
+		{
 			m_player->AddItem(ItemType::Onigiri);	// –• “x‰ñ•œ
 			SoundSource* se = NewGO<SoundSource>(0);
 			se->Init(5);

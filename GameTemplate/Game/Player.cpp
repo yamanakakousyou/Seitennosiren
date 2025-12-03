@@ -8,7 +8,8 @@
 #include "Message.h"
 #include "Pouse.h"
 
-namespace {
+namespace 
+{
 	const int PLAYERHP = 20;
 	const int PLAYERMAXHP = 20;
 	const int SATIETY = 100;
@@ -66,6 +67,7 @@ bool Player::Start()
 
 Player::Player()
 {
+
 }
 
 Player::~Player()
@@ -75,7 +77,8 @@ Player::~Player()
 
 void Player::Update()
 {
-	if (FindGO<Pouse>("pouse")) {
+	if (FindGO<Pouse>("pouse")) 
+	{
 		return;
 	}
 
@@ -162,9 +165,11 @@ void Player::PlayerMoveTurn()
 	if (m_isInventoryOpen) return;
 
 	static TurnType lastTurn = TurnType::Player;
-	if (m_game->GetCurrentTurn() != lastTurn) {
+	if (m_game->GetCurrentTurn() != lastTurn) 
+	{
 		HasMoved = false;
 	}
+
 	lastTurn = m_game->GetCurrentTurn();
 
 	if (m_game->GetCurrentTurn() != TurnType::Player)
@@ -191,7 +196,8 @@ void Player::PlayerMoveTurn()
 	if (GetAsyncKeyState('A') & 0x8000) { moveDir.x -= 1.0f; isPressed = true; }
 
 
-	if (!wasPressed && isPressed && moveDir.Length() > 0.0f) {
+	if (!wasPressed && isPressed && moveDir.Length() > 0.0f) 
+	{
 		moveDir.Normalize();
 		float step = 1000.0f;
 
@@ -215,7 +221,8 @@ void Player::PlayerMoveTurn()
 		modelRender.PlayAnimation(enAnimationClip_Walk);
 
 		m_satiety -= 1;
-		if (m_satiety < 0) {
+		if (m_satiety < 0) 
+		{
 			m_satiety = 0;
 			// 満腹度0ならHPが減る
 			m_PlayerHP -= 1;
@@ -250,7 +257,8 @@ void Player::PlayerMoveTurn()
 		PlayerAttack();
 
 		m_satiety -= 1;
-		if (m_satiety < 0) {
+		if (m_satiety < 0) 
+		{
 			m_satiety = 0;
 			m_PlayerHP -= 1;
 			if (m_PlayerHP < 0) m_PlayerHP = 0;
@@ -353,7 +361,9 @@ void Player::PlayerAttack()
 void Player::PlayerHeal(int recovery)
 {
 	m_PlayerHP += recovery;
-	if (m_PlayerHP > m_PlayerMaxHP) {
+
+	if (m_PlayerHP > m_PlayerMaxHP) 
+	{
 		m_PlayerHP = m_PlayerMaxHP; // 最大HPを超えないように
 	}
 }
@@ -405,7 +415,8 @@ void Player::Invebtory()
 	bool isTriggerX = kbX && !prevX;
 
 	// --- インベントリ開閉 ---
-	if (padSelect || isTriggerX) {
+	if (padSelect || isTriggerX) 
+	{
 		m_isInventoryOpen = !m_isInventoryOpen;
 		m_inventoryCursor = 0;
 	}
@@ -414,40 +425,48 @@ void Player::Invebtory()
 	prevX = kbX;
 
 	// 開いているときのみアイテム使用
-if (m_isInventoryOpen) {
+	if (m_isInventoryOpen) 
+	{
 
-    const int maxCursor = 2;  // 1番, 2番, その他 → 常に2
+		const int maxCursor = 2;  // 1番, 2番, その他 → 常に2
 
-    // 上移動
-    if (padUp) {
-        m_inventoryCursor--;
-        if (m_inventoryCursor < 0)
-            m_inventoryCursor = 0;
-    }
+		// 上移動
+		if (padUp) 
+		{
+				m_inventoryCursor--;
+			if (m_inventoryCursor < 0)
+				m_inventoryCursor = 0;
+		}
 
     // 下移動
-    if (padDown) {
+    if (padDown) 
+	{
         m_inventoryCursor++;
         if (m_inventoryCursor > maxCursor)
             m_inventoryCursor = maxCursor;
     }
 
     // Aボタン
-    if (padA) {
+    if (padA) 
+	{
 
-        if (m_inventoryCursor <= 1 && m_inventoryCursor < m_inventory.size()) {
+        if (m_inventoryCursor <= 1 && m_inventoryCursor < m_inventory.size()) 
+		{
             // アイテム使用
             UseItem(m_inventoryCursor);
         }
-        else if (m_inventoryCursor == 2) {
+        else if (m_inventoryCursor == 2) 
+		{
             // その他 → ポーズ画面
-            if (!FindGO<Pouse>("pouse")) {
+            if (!FindGO<Pouse>("pouse")) 
+			{
                 NewGO<Pouse>(0, "pouse");
             }
             return;
         }
     }
 }
+
 }
 
 void Player::AddItem(ItemType type)
@@ -480,10 +499,12 @@ void Player::UseItem(int index)
 	auto& item = m_inventory[index];
 
 	// アイテムの種類に応じて効果を発動
-	if (item.type == ItemType::Meat) {
+	if (item.type == ItemType::Meat) 
+	{
 		PlayerHeal(2);      // HPを2回復
 	}
-	else if (item.type == ItemType::Onigiri) {
+	else if (item.type == ItemType::Onigiri) 
+	{
 		PlayerEat(10);      // 満腹度を10回復
 	}
 
@@ -539,7 +560,8 @@ void Player::PlayerTakeDamage(int dmg)
 {
 	m_PlayerHP -= dmg;
 
-	if (m_PlayerHP <= 0) {
+	if (m_PlayerHP <= 0) 
+	{
 		m_PlayerHP = 0;
 
 		//ゲームオーバーを表示する
@@ -547,6 +569,7 @@ void Player::PlayerTakeDamage(int dmg)
 		DeleteGO(this);
 		DeleteGO(m_game);
 	}
+
 	return;
 }
 
