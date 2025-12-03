@@ -34,13 +34,15 @@ void Pouse::Update()
     if (!g_pad[0]) return;
 
     // STARTでポーズ解除
-    if (g_pad[0]->IsTrigger(enButtonStart)) {
+    if (g_pad[0]->IsTrigger(enButtonStart)) 
+    {
         DeleteGO(this);
         return;
     }
 
     // Aボタンでタイトルに戻る
-    if (g_pad[0]->IsTrigger(enButtonA)) {
+    if (g_pad[0]->IsTrigger(enButtonA)) 
+    {
 
         DeleteGO(FindGO<Player>("player"));
         DeleteGO(FindGO<Enemy>("enemy"));
@@ -61,9 +63,6 @@ void Pouse::Update()
         // 自分(Pouse)も削除
         DeleteGO(this);
         return;
-        //// ゲーム本体を破棄
-        //m_game = FindGO<Game>("game");
-        //if (m_game) DeleteGO(m_game);
     }
 }
 

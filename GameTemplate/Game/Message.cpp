@@ -4,10 +4,12 @@
 
 Message::Message()
 {
+
 }
 
 Message::~Message()
 {
+
 }
 
 bool Message::Start()
@@ -16,7 +18,6 @@ bool Message::Start()
     m_spriteRender.Init("Assets/sprite/message_window.dds", 512.0f, 128.0f);
     m_spriteRender.SetPosition({ 600.0f, 900.0f, 0.0f });
     m_fontRender.SetPosition({ 700.0f,-300.0f,0.0f });
-    //m_spriteRender.SetMulColor({ 0.0f, 0.0f, 0.0f, 0.5f }); // ”¼“§–¾
 
     return true;
 }
@@ -34,7 +35,8 @@ void Message::NextMessage()
 
 void Message::Update()
 {
-    if (FindGO<Pouse>("pouse")) {
+    if (FindGO<Pouse>("pouse")) 
+    {
         return;
     }
     m_spriteRender.Update();

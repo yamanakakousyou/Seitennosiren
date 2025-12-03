@@ -4,7 +4,8 @@
 #include "Game.h"
 #include "Pouse.h"
 
-namespace {
+namespace 
+{
 	const float BUFF_MULTIPIER = 2.0f;		//ƒoƒt‚Ì”{—¦B
 }
 
@@ -31,7 +32,8 @@ bool Sord::Start()
 
 void Sord::Update()
 {
-	if (FindGO<Pouse>("pouse")) {
+	if (FindGO<Pouse>("pouse")) 
+	{
 		return;
 	}
 	if (!m_player) return;
@@ -41,7 +43,8 @@ void Sord::Update()
 
 	float pickupRange = 30.0f;		// E‚¦‚é”ÍˆÍ
 
-	if (dist < pickupRange) {
+	if (dist < pickupRange) 
+	{
 		SoundSource* se = NewGO<SoundSource>(0);
 		se->Init(5);
 		se->Play(false);

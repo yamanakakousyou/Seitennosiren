@@ -9,7 +9,8 @@
 #include "BackGround.h"
 #include "Pouse.h"
 
-namespace {
+namespace 
+{
     const float MAP_SIZE = 200.0f;  // ミニマップの大きさ
     const float SCALE = 0.05f;      // 縮尺（3D→ミニマップ）
 }
@@ -97,7 +98,7 @@ void Map::Render(RenderContext& rc)
     
     //ワールド座標 → ミニマップ絶対座標
 
-    // 例：ステージ全体のワールド範囲
+    //　ステージ全体のワールド範囲
     const float WORLD_MIN_X = -500.0f;
     const float WORLD_MAX_X = 500.0f;
     const float WORLD_MIN_Z = -500.0f;
@@ -106,7 +107,8 @@ void Map::Render(RenderContext& rc)
     const float worldWidth = WORLD_MAX_X - WORLD_MIN_X;
     const float worldHeight = WORLD_MAX_Z - WORLD_MIN_Z;
 
-    auto ToMiniMap = [&](const Vector3 worldPos) {
+    auto ToMiniMap = [&](const Vector3 worldPos) 
+        {
         Vector3 mini;
         float nx = (worldPos.x - WORLD_MIN_X) / worldWidth;   
         float ny = (worldPos.z - WORLD_MIN_Z) / worldHeight;  
@@ -130,8 +132,10 @@ void Map::Render(RenderContext& rc)
     auto enemies = FindGOs<Enemy>("enemy");
 
     // アイコン数を敵数に合わせる
-    if (m_enemyIcons.size() < enemies.size()) {
-        for (size_t i = m_enemyIcons.size(); i < enemies.size(); ++i) {
+    if (m_enemyIcons.size() < enemies.size()) 
+    {
+        for (size_t i = m_enemyIcons.size(); i < enemies.size(); ++i) 
+        {
             auto icon = new SpriteRender();
             icon->Init("Assets/sprite/enemy_icon.dds", 16.0f, 16.0f);
             icon->SetPivot(Vector2(0.5f, 0.5f));
@@ -139,33 +143,38 @@ void Map::Render(RenderContext& rc)
         }
     }
 
-    // 更新＆描画
-    for (size_t i = 0; i < enemies.size(); ++i) {
+    for (size_t i = 0; i < enemies.size(); ++i) 
+    {
         m_enemyIcons[i]->SetPosition(ToMiniMap(enemies[i]->GetPosition()));
         m_enemyIcons[i]->Update();
         m_enemyIcons[i]->Draw(rc);
     }
 
     //ボス
-    if (auto boss = FindGO<Boss>("boss")) {
+    if (auto boss = FindGO<Boss>("boss")) 
+    {
         m_bossIcon.SetPosition(ToMiniMap(boss->GetPosition()));
         m_bossIcon.Update();
         m_bossIcon.Draw(rc);
     }
 
-    if (auto meat = FindGO<Food>("meat")) {
+    //アイテム
+    if (auto meat = FindGO<Food>("meat")) 
+    {
         m_meatIcon.SetPosition(ToMiniMap(meat->GetPosition()));
         m_meatIcon.Update();
         m_meatIcon.Draw(rc);
     }
-    if (auto onigiri = FindGO<Food>("onigiri")) {
+    if (auto onigiri = FindGO<Food>("onigiri")) 
+    {
         m_onigiriIcon.SetPosition(ToMiniMap(onigiri->GetPosition()));
         m_onigiriIcon.Update();
         m_onigiriIcon.Draw(rc);
     }
 
     // 剣
-    if (auto sord=FindGO<Sord>("item")) {
+    if (auto sord=FindGO<Sord>("item")) 
+    {
         m_sordIcon.SetPosition(ToMiniMap(sord->GetPosition()));
         m_sordIcon.Update();
         m_sordIcon.Draw(rc);

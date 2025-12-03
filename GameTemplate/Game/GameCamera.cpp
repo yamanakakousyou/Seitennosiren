@@ -29,14 +29,14 @@ bool GameCamera::Start()
 void GameCamera::Update()
 {
 
-	if (FindGO<Pouse>("pouse")) {
+	if (FindGO<Pouse>("pouse")) 
+	{
 		return;
 	}
 	//カメラを更新。
 //注視点を計算する。
 	Vector3 target = m_player->m_position;
 
-	//target.y += 150.0f;
 	target.y += 90.0f;
 	Vector3 toCameraPosOld = toCameraPos;
 	//パッドの入力を使ってカメラを回す。
@@ -48,21 +48,20 @@ void GameCamera::Update()
 	qRot.Apply(toCameraPos);
 	//X軸周りの回転。
 	Vector3 axisX;
-	/*axisX.Cross(Vector3::AxisY, toCameraPos);
-	axisX.Normalize();
-	qRot.SetRotationDeg(axisX, 1.3f * y);
-	qRot.Apply(toCameraPos);*/
+
 	//カメラの回転の上限をチェックする。
 	//注視点から視点までのベクトルを正規化する。
 	//正規化すると、ベクトルの大きさが１になる。
 	//大きさが１になるということは、ベクトルから強さがなくなり、方向のみの情報となるということ。
 	Vector3 toPosDir = toCameraPos;
 	toPosDir.Normalize();
-	if (toPosDir.y < -0.2f) {
+	if (toPosDir.y < -0.2f) 
+	{
 		//カメラが上向きすぎ。
 		toCameraPos = toCameraPosOld;
 	}
-	else if (toPosDir.y > 0.9f) {
+	else if (toPosDir.y > 0.9f) 
+	{
 		//カメラが下向きすぎ。
 		toCameraPos = toCameraPosOld;
 	}

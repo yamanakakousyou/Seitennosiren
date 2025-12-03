@@ -5,7 +5,8 @@
 #include "Message.h"
 #include "Pouse.h"
 
-namespace {
+namespace 
+{
 	const int EnemyHP = 4;
 }
 
@@ -33,7 +34,7 @@ bool Enemy::Start()
 	m_game = FindGO<Game>("game");
 	m_message = FindGO<Message>("message");
 	//当たり判定を描画する。
-//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 
 	m_EnemyHP = EnemyHP;
 
@@ -44,9 +45,11 @@ bool Enemy::Start()
 
 void Enemy::Update()
 {
-	if (FindGO<Pouse>("pouse")) {
+	if (FindGO<Pouse>("pouse")) 
+	{
 		return;
 	}
+
 	// アニメ・その他処理
 	m_modelRender.Update();
 	m_EnemyspriteRender.Update();
@@ -59,17 +62,20 @@ void Enemy::Update()
 
 
 
-void Enemy::Cooldown(float dt) {
+void Enemy::Cooldown(float dt) 
+{
 	// クールダウンの進行
 	HasCooldown = false;
-	if (m_attackCooldown > 0.0f) {
+
+	if (m_attackCooldown > 0.0f) 
+	{
 		m_attackCooldown -= dt;
 		if (m_attackCooldown < 0.0f) m_attackCooldown = 0.0f;
 	}
 
 	// 攻撃はクールダウンが0のときのみ実行
-	if (m_attackCooldown <= 0.0f) {
-		//EnemyAttack();
+	if (m_attackCooldown <= 0.0f) 
+	{
 		HasCooldown = true;
 	}
 }
@@ -86,12 +92,16 @@ void Enemy::EnemyTurn()
 	if (!m_game) return;
 
 	static TurnType lastTurn = TurnType::Enemy;
-	if (m_game->GetCurrentTurn() != lastTurn) {
+
+	if (m_game->GetCurrentTurn() != lastTurn) 
+	{
 		HasMoved = false;
 	}
+
 	lastTurn = m_game->GetCurrentTurn();
 
-	if (m_game->GetCurrentTurn() == TurnType::Enemy && !HasMoved) {
+	if (m_game->GetCurrentTurn() == TurnType::Enemy && !HasMoved) 
+	{
 		if (!m_game->IsEnemyWaitTimeElapsed()) return;
 
 		Vector3 toPlayer = m_game->GetPlayerPosition() - m_position;
@@ -99,7 +109,8 @@ void Enemy::EnemyTurn()
 		float attackRange = 70.0f; // 近接攻撃距離
 
 		// --- 攻撃優先 ---
-		if (dist < attackRange) {
+		if (dist < attackRange) 
+		{
 			float angle = atan2f(toPlayer.x, toPlayer.z);
 			Quaternion rot;
 			rot.SetRotationY(angle);
@@ -108,7 +119,6 @@ void Enemy::EnemyTurn()
 			m_modelRender.PlayAnimation(enAnimationClip_Attack);
 			EnemyAttack();
 			HasMoved = true;
-			//m_game->NextTurn();
 			return;
 		}
 
@@ -116,21 +126,25 @@ void Enemy::EnemyTurn()
 		float step = 20.0f; // 1マスの見た目距離
 		float chaseRange = 150.0f;
 
-		if (dist < chaseRange) {
+		if (dist < chaseRange) 
+		{
 			// XとZの距離の絶対値を比較して大きい軸に沿って移動
 			//常に正方向か負方向かを「正のとき/負のとき」で決める処理,
 			// 分岐の回数を減らせる。
-			if (fabs(toPlayer.x) > fabs(toPlayer.z)) {
+			if (fabs(toPlayer.x) > fabs(toPlayer.z)) 
+			{
 				move.x = (toPlayer.x > 0) ? step : -step;
 			}
-			else {
+			else 
+			{
 				move.z = (toPlayer.z > 0) ? step : -step;
 			}
 		}
 		else {
 			// ランダム移動（上下左右）
 			int dir = rand() % 4;
-			switch (dir) {
+			switch (dir) 
+			{
 			case 0: move.z = step; break;   // 前
 			case 1: move.z = -step; break;  // 後
 			case 2: move.x = -step; break;  // 左
@@ -151,15 +165,11 @@ void Enemy::EnemyTurn()
 		m_modelRender.PlayAnimation(enAnimationClip_Idle);
 
 		HasMoved = true;
-		//m_game->NextTurn();
 	}
 
 	// プレイヤーとの接触判定
 	Vector3 playerPos = m_game->GetPlayerPosition();
 	float distToPlayer = (playerPos - m_position).Length();
-	if (distToPlayer < 50.0f) {
-		// 当たった処理
-	}
 }
 
 void Enemy::EnemyAttack()
@@ -170,17 +180,21 @@ void Enemy::EnemyAttack()
 	float dist = toPlayer.Length();
 
 	float attackRange = 60.0f;
-	if (dist <= attackRange) {
+	if (dist <= attackRange) 
+	{
 		int roll = rand() % 100;
-		if (roll < 90) {
+
+		if (roll < 90) 
+		{
 			// プレイヤーにダメージを送るのみ。プレイヤー側で HP を管理
 			m_player->PlayerTakeDamage(1);
 			auto se = NewGO<SoundSource>(0);
-			se->Init(7);       // ← WaveFileBank の番号
+			se->Init(7);
 			se->Play(false);
 			m_message->AddMessage("PlayerDamage");
 			// エフェクト/サウンドをここに追加
 		}
+
 		m_attackCooldown = m_AttackCooldown;
 	}
 }
@@ -201,7 +215,8 @@ void Enemy::EnemyTakeDamage(int dmg)
 {
 	m_EnemyHP -= dmg;
 
-	if (m_EnemyHP <= 0) {
+	if (m_EnemyHP <= 0) 
+	{
 		m_EnemyHP = 0;
 
 		// 自分を消す前に Game の m_enemy を無効化
