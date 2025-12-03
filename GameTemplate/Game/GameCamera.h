@@ -10,8 +10,11 @@ public:
 	//更新処理
 	void Update();
 
+public:
 	//注視点から視点に向かうベクトル。
 	Vector3				toCameraPos;
+
+private:
 	//プレイヤー
 	Player*				m_player;
 	//ステート

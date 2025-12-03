@@ -14,9 +14,9 @@ public:
 	void Update();
 	//•`‰æˆ—
 	void Render(RenderContext& rc);
-
-private:
+public:
 	SpriteRender	m_spriteRender;
+private:
 	Game*			m_game = nullptr;
 	SoundSource*	m_soundSource = nullptr;
 };

@@ -19,13 +19,13 @@ public:
 	const Vector3& GetPosition() const { return m_position; }
 	void SetPosition(const Vector3& pos) { m_position = pos; m_modelRender.SetPosition(m_position); }
 
-
-	Player*			m_player = nullptr;
-	Game*			m_game = nullptr;
+public:
 	ModelRender		m_modelRender;
 	Vector3			m_position = Vector3::Zero;//ポジション
 
 private:
+	Player*			m_player = nullptr;
+	Game*			m_game = nullptr;
 
 	bool			m_isGet = false;
 	bool			m_isCollected = false;	//アイテム取得済みかどうかのフラグ

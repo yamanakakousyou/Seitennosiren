@@ -25,10 +25,11 @@ public:
 
     void NextMessage();
 
-private:
+public:
     SpriteRender                                m_spriteRender;     // ”wŒi
     FontRender                                  m_fontRender;       // ƒeƒLƒXƒg
     std::string                                 m_currentMessage;
 
+private:
     float                                       m_sdRenderTimer = 0.0f;
 };

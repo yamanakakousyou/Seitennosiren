@@ -22,11 +22,10 @@ public:
 	void Update();
 
 	void Render(RenderContext& rc);
-
-private:
-
+public:
 	SpriteRender			m_spriteRender;
 
+private:
 	Game*					m_game=nullptr;
 	Title*					m_title=nullptr;
 };

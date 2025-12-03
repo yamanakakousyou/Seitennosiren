@@ -30,14 +30,16 @@ public:
 	const Vector3& GetPosition() const { return m_position; }
 	void SetPosition(const Vector3& pos) { m_position = pos; m_modelRender.SetPosition(m_position); }
 
-
-	Player*					m_player = nullptr;
-	Game*					m_game = nullptr;
-	Message*				m_message;
+public:
 	ModelRender				m_modelRender;
 	Vector3					m_position = Vector3::Zero;		//ポジション
 
 	FoodType				m_type = FoodType::Meat;		// デフォルトは肉
+
+private:
+	Player*					m_player = nullptr;
+	Game*					m_game = nullptr;
+	Message*				m_message;
 
 	bool					m_isGet = false;
 	bool					m_isCollected = false;	//アイテム取得済みかどうかのフラグ
