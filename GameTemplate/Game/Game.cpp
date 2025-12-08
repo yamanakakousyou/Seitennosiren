@@ -58,7 +58,7 @@ bool Game::Start()
 	m_gamecamera = NewGO<GameCamera>(0, "gamecamera");
 	m_map = NewGO<Map>(0, "map");
 	m_currentTurn = TurnType::Player;
-
+	Vector3 bossSpawnPos;
 	//ステージIDで判別する
 	int stageID = m_backGround->GetStageID();
 
@@ -67,6 +67,7 @@ bool Game::Start()
 		//ステージ1生成時の位置
 		m_player->SetPosition(Vector3(m_player->m_position));
 		SpawnEnemy({ 300.0f, 0.0f, 0.0f });
+		bossSpawnPos = { 300.0f, 0.0f, 0.0f };
 		m_sord->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
 		meat->SetType(FoodType::Meat);
 		meat->SetPosition({ 100.0f, 0.0f, 0.0f });
@@ -79,6 +80,7 @@ bool Game::Start()
 		//ステージ2生成時の位置
 		m_player->SetPosition(Vector3(m_player->m_position));
 		SpawnEnemy({ 300.0f, 0.0f, 0.0f });
+		bossSpawnPos = { -100.0f, 0.0f, 0.0f };
 		m_sord->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
 		meat->SetType(FoodType::Meat);
 		meat->SetPosition({ -100.0f, 0.0f, 0.0f });
@@ -93,6 +95,7 @@ bool Game::Start()
 		SpawnEnemy({ 300.0f, 0.0f, 0.0f });
 		SpawnEnemy({ -60.0f, 0.0f, 50.0f });
 		SpawnEnemy({ -200.0f, 0.0f, -100.0f });
+		bossSpawnPos = { 50.0f, 0.0f, 0.0f };
 		m_sord->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
 		meat->SetType(FoodType::Meat);
 		meat->SetPosition({ 300.0f, 0.0f, 0.0f });
@@ -107,6 +110,7 @@ bool Game::Start()
 	//BGMは曲をループさせる。
 	m_soundSource->Play(true);
 
+	m_bossSpawnPos = bossSpawnPos;
 	return true;
 }
 
@@ -175,11 +179,14 @@ void Game::SpawnEnemy(const Vector3& pos)
 	m_enemies.push_back(e);
 }
 
-void Game::SpawnBoss()
+void Game::SpawnBoss(const Vector3&pos)
 {
 	Boss* b = NewGO<Boss>(0, "boss");
 	b->SetPlayer(m_player);
+	b->SetPosition(pos);    
 	m_enemies.push_back(b);
+
+	m_boss = b;
 }
 
 void Game::OnEnemyDead(Enemy* enemy)
@@ -193,7 +200,7 @@ void Game::OnEnemyDead(Enemy* enemy)
 	// 雑魚が全滅したらボスを出す
 	if (m_enemies.empty() && m_boss == nullptr) 
 	{
-		SpawnBoss();
+		SpawnBoss(m_bossSpawnPos);
 	}
 }
 

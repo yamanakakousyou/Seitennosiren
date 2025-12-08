@@ -38,7 +38,7 @@ public:
 	void EnemyTurn();
 	void NextTurn();
 	void SpawnEnemy(const Vector3& pos);
-	void SpawnBoss();
+	void SpawnBoss(const Vector3& pos);
 	void OnEnemyDead(Enemy* enemy);
 
 public:
@@ -58,6 +58,7 @@ public:
 public:
 	ModelRender									m_modelRender;
 	Vector3										m_pos;
+	Vector3										m_bossSpawnPos = Vector3::Zero;
 	Vector3 GetPlayerPosition() const { return	m_player->GetPosition(); }
 	Vector3 GetItemPosition() const { return	m_sord->GetPosition(); }
 	TurnType									m_currentTurn = TurnType::Player;
