@@ -329,6 +329,11 @@ void Player::PlayerAttack()
 					enemy->EnemyTakeDamage(m_attackPower);
 					m_message->AddMessage("EnemyDamage");
 				}
+
+				else
+				{
+					m_message->AddMessage("Miss");
+				}
 			}
 		}
 	}
@@ -352,6 +357,11 @@ void Player::PlayerAttack()
 				{
 					m_boss->BossTakeDamage(m_attackPower);
 					m_message->AddMessage("BossDamage");
+				}
+
+				else
+				{
+					m_message->AddMessage("Miss");
 				}
 			}
 		}

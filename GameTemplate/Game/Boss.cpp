@@ -80,6 +80,7 @@ void Boss::EnemyAttack()
     {
         int roll = rand() % 100;
 
+        //É{ÉXÇÃçUåÇÇÃÇ›äOÇÍÇ‚Ç∑Ç¢
         if (roll < 80) 
         { 
             // ñΩíÜó¶
@@ -90,6 +91,11 @@ void Boss::EnemyAttack()
                 se->Init(7);       
                 se->Play(false);
                 m_message->AddMessage("PlayerDamage");
+            }
+
+            else
+            {
+                m_message->AddMessage("Miss");
             }
         }
         m_attackCooldown = m_AttackCooldown;

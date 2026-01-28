@@ -195,6 +195,11 @@ void Enemy::EnemyAttack()
 			// エフェクト/サウンドをここに追加
 		}
 
+		else
+		{
+			m_message->AddMessage("Miss");
+		}
+
 		m_attackCooldown = m_AttackCooldown;
 	}
 }
