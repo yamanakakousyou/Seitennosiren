@@ -41,7 +41,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//skyCube
 	SkyCube* skyCube = NewGO<SkyCube>(0);
-	skyCube->SetType(enSkyCubeType_Night);
+	//skyCube->SetType(enSkyCubeType_Night);
+	skyCube->SetType(enSkyCubeType_Day);
 	skyCube->SetScale(300.0f);
 
 	//////////////////////////////////////
